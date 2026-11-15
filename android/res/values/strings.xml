@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nazev">Kartička</string>
+    <string name="widget_mala">Kartička malá</string>
+    <string name="widget_velka">Kartička velká</string>
+    <string name="widget_popis">Karta obchodu, kde jsi</string>
+    <string name="jas_popis">Rozsvítit displej naplno</string>
+    <string name="widget_prazdny">Přidej v appce první kartu</string>
+    <string name="nabidka_nadpis">Ukázat na widgetu</string>
+    <string name="nabidka_popis">Vybrat jinou kartu</string>
+    <string name="widget_maly">Kód se sem nevejde, klepni a ukážu ho velký</string>
+    <string name="widget_chyba">Kód nejde nakreslit, otevři kartu v appce</string>
+    <string name="widget_appka">Kód ukáže appka obchodu, klepni</string>
+    <string name="vzhled">Vzhled widgetu</string>
+    <string name="vzhled_klepnuti">Klepnutí na widget otevře</string>
+    <string name="klepnuti_hlavni">Seznam karet (hlavní stránku)</string>
+    <string name="klepnuti_karta">Kartu, kterou widget ukazuje</string>
+    <string name="vzhled_rohy">Rohy bílé plochy kolem kódu</string>
+    <string name="roh_kulate">Kulaté</string>
+    <string name="roh_male">Malé</string>
+    <string name="roh_jemne">Jemné</string>
+    <string name="roh_hranate">Hranaté</string>
+    <string name="vzhled_pozadi">Pozadí widgetu</string>
+    <string name="pozadi_cerne">Černé</string>
+    <string name="pozadi_pruhledne">Průhledné: na ploše jen kód s bílým okrajem</string>
+    <string name="vzhled_tady">Tlačítko Jsem v prodejně</string>
+    <string name="tady_ano">Ukázat ve widgetu u obchodu, který ještě nezná místo</string>
+    <string name="tady_ne">Neukazovat</string>
+    <string name="vzhled_pozn">Sluníčko rozsvítí displej naplno, další klepnutí na něj zhasne dřív, dvojklik nechá svítit, dokud znovu neklepneš.</string>
+    <string name="vzhled_ukazka">Ukázka</string>
+    <string name="hotovo">Hotovo</string>
+    <string name="tady">Jsem v prodejně</string>
+    <!-- v úzkém nízkém widgetu (2×1), kde by se dlouhý nápis s názvem obchodu nevešel -->
+    <string name="tady_kratce">Jsem tu</string>
+    <string name="tady_ulozeno">✓ Zapamatováno</string>
+    <string name="tady_nevim">Teď nevím, kde jsi</string>
+    <string name="ukaz_heslo">Ukázat heslo nebo PIN</string>
+    <string name="ukaz_heslo_popis">Uložené u karty v Kartičce</string>
+    <string name="zk_pridat">Přidat kartu</string>
+    <string name="zk_mapa">Mapa okolí</string>
+    <string name="zk_hledat">Hledat kartu</string>
+</resources>

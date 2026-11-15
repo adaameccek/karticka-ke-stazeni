@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Kartička</title>
+<meta name="theme-color" content="#F4F5F7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kartička">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="ikona-180.png">
+<link rel="icon" href="ikona-192.png" type="image/png">
+<link rel="stylesheet" href="styl.css">
+<link rel="stylesheet" href="web.css">
+</head>
+<body>
+<header class="hlava" id="hlava">
+  <h1>Kartička</h1>
+  <button id="btnPridat" class="ikona" type="button" aria-label="Přidat kartu"></button>
+  <button id="btnNastaveni" class="ikona" type="button" aria-label="Nastavení"></button>
+</header>
+<main class="obsah" id="hlavni">
+  <section id="tady" aria-live="polite"></section>
+  <section id="seznam"></section>
+</main>
+<div id="vrstvy"></div>
+<script src="vendor/bwip-js.js"></script>
+<script src="data.js"></script>
+<script src="web.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

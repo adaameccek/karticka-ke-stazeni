@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Zkratky po podržení ikony appky. Hlavni.akceZ pustí dál jen tyhle tři hodnoty „akce". -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="hledat"
+        android:enabled="true"
+        android:icon="@drawable/zkratka_hledat"
+        android:shortcutShortLabel="@string/zk_hledat">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="cz.adamhorak.karticka"
+            android:targetClass="cz.adamhorak.karticka.Hlavni">
+            <extra android:name="akce" android:value="hledat" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="mapa"
+        android:enabled="true"
+        android:icon="@drawable/zkratka_mapa"
+        android:shortcutShortLabel="@string/zk_mapa">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="cz.adamhorak.karticka"
+            android:targetClass="cz.adamhorak.karticka.Hlavni">
+            <extra android:name="akce" android:value="mapa" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="pridat"
+        android:enabled="true"
+        android:icon="@drawable/zkratka_pridat"
+        android:shortcutShortLabel="@string/zk_pridat">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="cz.adamhorak.karticka"
+            android:targetClass="cz.adamhorak.karticka.Hlavni">
+            <extra android:name="akce" android:value="pridat" />
+        </intent>
+    </shortcut>
+</shortcuts>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cz.adamhorak.karticka">
+
+    <!-- INTERNET: kontrola nové verze (Verze.java stáhne číslo verze z karticka.adamhorak.cz) podněty, když je člověk
+         sám pošle, a místa obchodů bez karet a čísel, dokud je nevypne v Nastavení, výchozí je zapnuto
+         (Sber.java, karticka.adamhorak.cz/api), a podklad
+         otevřené mapy okolí (Dlazdice.java, dlaždice z tile.openstreetmap.org). Karty, kódy a hesla nikam
+         neodcházejí; stránka appky má síť zablokovanou a build.py hlídá, aby síť v Javě nepoužíval jiný
+         soubor než Verze.java, Sber.java a Dlazdice.java. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Widget podle obchodu: poloha i bez otevřené appky, jen když ji Adam sám povolí („Povolit vždy"). -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!-- Které patro / který obchod v obchoďáku: appka jen vidí okolní Wi-Fi sítě a jak silné jsou,
+         nepřipojuje se k nim a nic neposílá (oprávnění bez dotazu, stačí povolená poloha). -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Heslo k účtu u karty ukáže appka až po otisku prstu nebo kódu telefonu (systémové okno, bez dotazu na oprávnění). -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <!-- Výjimka z úspory baterie, aby systém hlídání widgetu neuspal: povoluje ji Adam sám v okně systému. -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!-- Widget naživo: tichá služba v popředí drží polohu „při používání" i po odchodu z appky (Sledovani.java).
+         O povolení oznámení appka nežádá, na Androidu 13+ je pak služba vidět jen ve správci běžících appek. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <!-- Aktualizace přímo z appky (Instalace.java): Android se pokaždé zeptá, napoprvé chce povolit instalaci
+         z Kartičky. Instaluje jen APK z karticka.adamhorak.cz se stejným podpisem a otiskem z verze.json. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+
+    <!-- Body a kupóny: appky obchodů z aplikace/vernost.json. Bez tohohle seznamu je Android appce neukáže
+         a tlačítko by vždy otevřelo web. build.py hlídá, aby tu byla každá appka z vernost.json. -->
+    <queries>
+        <package android:name="cz.albert.app" />
+        <package android:name="mondieu.loyalty" />
+        <package android:name="cz.odp.dpmpapp" />
+        <package android:name="com.google.android.apps.walletnfcrel" />
+        <package android:name="at.billa.international.czech" />
+        <package android:name="com.kaufland.Kaufland" />
+        <package android:name="cz.tesco.clubcard" />
+        <package android:name="com.lidl.eci.lidlplus" />
+        <package android:name="cz.penny.app" />
+        <package android:name="com.pragonauts.globus" />
+        <package android:name="de.dm.meindm.android" />
+        <package android:name="cz.etnetera.mobile.rossmann" />
+        <package android:name="cz.anywhere.tetadrugstore" />
+        <package android:name="cz.benu.lekarna" />
+        <package android:name="eu.drmax.mobile" />
+        <package android:name="com.fruitisimo.app" />
+        <package android:name="com.ingka.ikea.app" />
+        <package android:name="com.hm.goe" />
+        <package android:name="com.afklm.mobile.android.gomobile.klm" />
+        <package android:name="com.starbucks.cz" />
+        <package android:name="com.mcdonalds.mobileapp" />
+        <package android:name="cz.cinestar.app" />
+        <package android:name="fr.sephora.sephorafrance" />
+        <package android:name="cz.marksandspencer.app" />
+        <package android:name="com.intersport.app.at" />
+        <package android:name="com.cremedelacreme.app" />
+        <package android:name="com.decathlon.app" />
+        <package android:name="com.pragonauts.notino" />
+        <package android:name="com.datart.production" />
+        <package android:name="com.shell.sitibv.retail" />
+        <package android:name="com.comarch.clm.mobileapp.omvcz" />
+        <package android:name="cz.benzina.aplikace" />
+        <package android:name="com.humanic.shoes" />
+        <package android:name="cz.pilulka.shop" />
+        <package android:name="at.helloagain.losteria" />
+        <package android:name="io.trifft.wormelen" />
+        <package android:name="cz.bbdomu.app" />
+        <package android:name="com.douglas.main" />
+        <package android:name="com.lindex.customerapp" />
+        <package android:name="de.tchibo.app" />
+        <package android:name="hu.mol.move" />
+        <package android:name="pl.cineworld.cinemacity" />
+        <package android:name="com.loyalty.app.tempo" />
+        <package android:name="cz.rituals.app.twa" />
+        <package android:name="cz.magistra.twa" />
+        <package android:name="pl.ez.formFactory" />
+        <package android:name="com.datlink.mymaxfitness" />
+        <package android:name="com.bootiq2.gtsisic" />
+        <package android:name="cz.dpp.praguepublictransport" />
+        <package android:name="cz.cd.mujvlak.an" />
+        <package android:name="pl.benefitsystems.multisport.mymultisport" />
+        <package android:name="com.embarcadero.MestskaKnihovnavPraze" />
+        <package android:name="com.appsisto.bushmanapp" />
+        <package android:name="com.benetton.app" />
+        <package android:name="com.soliver.inyourpocket" />
+        <package android:name="com.calzedoniagroup.calzedonia" />
+        <package android:name="com.calzedoniagroup.intimissimi" />
+        <package android:name="com.calzedoniagroup.tezenis" />
+        <package android:name="com.csag.orsay.android" />
+        <package android:name="pl.sklepmartes.app" />
+        <package android:name="cz.klenotyaurum.app" />
+        <package android:name="pl.apart.android" />
+        <package android:name="air.cz.saunia.saunia" />
+        <package android:name="it.conad.mobileapp" />
+        <package android:name="cz.postaonline.android" />
+    </queries>
+
+    <application
+        android:label="@string/nazev"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:theme="@style/Motiv"
+        android:allowBackup="false"
+        android:supportsRtl="false">
+
+        <!-- WebView neposílá Googlu statistiky o používání (stránka appky je jen z assets). -->
+        <meta-data android:name="android.webkit.WebView.MetricsOptOut" android:value="true" />
+
+        <activity
+            android:name=".Hlavni"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode|density">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Rychlý vstup: snímek obrazovky nebo fotka karty nasdílená z galerie rovnou do Kartičky (najde v ní kód). -->
+            <intent-filter android:label="@string/zk_pridat">
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <!-- Zkratky po podržení ikony appky -->
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+        </activity>
+
+        <activity
+            android:name=".Snimac"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Snimac"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode" />
+
+        <!-- Sluníčko na widgetu: jas naplno na 5 sekund, ve vlastní úloze, aby se nepletlo s appkou -->
+        <activity
+            android:name=".Jas"
+            android:exported="false"
+            android:theme="@style/Jas"
+            android:taskAffinity=""
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:screenOrientation="behind"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode" />
+
+        <!-- Seznam karet pod názvem na widgetu: vybraná karta se ukáže na widgetu; průhledné okno jako u sluníčka -->
+        <activity
+            android:name=".Nabidka"
+            android:exported="false"
+            android:theme="@style/Jas"
+            android:taskAffinity=""
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:screenOrientation="behind"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode" />
+
+        <!-- Vzhled widgetu: rohy a pozadí (černé, průhledné); Android ho otevře z widgetu (proto exported), appka z Nastavení -->
+        <activity
+            android:name=".Vzhled"
+            android:exported="true"
+            android:label="@string/vzhled"
+            android:theme="@style/Vzhled"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".Widget" android:exported="false" android:label="@string/nazev">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info" />
+        </receiver>
+
+        <receiver android:name=".WidgetMaly" android:exported="false" android:label="@string/widget_mala">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_maly" />
+        </receiver>
+
+        <receiver android:name=".WidgetVelky" android:exported="false" android:label="@string/widget_velka">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_velky" />
+        </receiver>
+
+        <!-- Dlaždice v rychlém nastavení (stažená horní lišta): otevře Kartičku, i přes zamčenou obrazovku. -->
+        <service
+            android:name=".Rychle"
+            android:exported="true"
+            android:label="@string/nazev"
+            android:icon="@drawable/dlazdice"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".Hlidka"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="false" />
+
+        <service
+            android:name=".Sledovani"
+            android:foregroundServiceType="location"
+            android:exported="false" />
+
+        <receiver android:name=".PolohaWidgetu" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".Instalace" android:exported="false" />
+    </application>
+</manifest>

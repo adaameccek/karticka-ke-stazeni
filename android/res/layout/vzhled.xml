@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vzhled widgetu (Vzhled.java): náhled, co otevře klepnutí, rohy a pozadí (černé nebo průhledné). -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="22dp"
+        android:paddingEnd="22dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/vzhled"
+            android:textColor="@color/text"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- živý náhled widgetu, Vzhled.java do něj dá stejné zobrazení jako na ploše -->
+        <FrameLayout
+            android:id="@+id/nahled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:minHeight="40dp" />
+
+        <!-- stejná volba jako Klepnutí na widget otevře v Nastavení appky -->
+        <TextView
+            style="@style/VzhledNadpis"
+            android:text="@string/vzhled_klepnuti" />
+
+        <RadioGroup
+            android:id="@+id/klepnuti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton android:id="@+id/klepnuti_hlavni" style="@style/VzhledVolba" android:text="@string/klepnuti_hlavni" />
+            <RadioButton android:id="@+id/klepnuti_karta" style="@style/VzhledVolba" android:text="@string/klepnuti_karta" />
+        </RadioGroup>
+
+        <TextView
+            style="@style/VzhledNadpis"
+            android:text="@string/vzhled_rohy" />
+
+        <RadioGroup
+            android:id="@+id/rohy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton android:id="@+id/roh_kulate" style="@style/VzhledVolba" android:text="@string/roh_kulate" />
+            <RadioButton android:id="@+id/roh_male" style="@style/VzhledVolba" android:text="@string/roh_male" />
+            <RadioButton android:id="@+id/roh_jemne" style="@style/VzhledVolba" android:text="@string/roh_jemne" />
+            <RadioButton android:id="@+id/roh_hranate" style="@style/VzhledVolba" android:text="@string/roh_hranate" />
+        </RadioGroup>
+
+        <TextView
+            style="@style/VzhledNadpis"
+            android:text="@string/vzhled_pozadi" />
+
+        <RadioGroup
+            android:id="@+id/pozadi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton android:id="@+id/pozadi_pruhledne" style="@style/VzhledVolba" android:text="@string/pozadi_pruhledne" />
+            <RadioButton android:id="@+id/pozadi_cerne" style="@style/VzhledVolba" android:text="@string/pozadi_cerne" />
+        </RadioGroup>
+
+        <TextView
+            style="@style/VzhledNadpis"
+            android:text="@string/vzhled_tady" />
+
+        <RadioGroup
+            android:id="@+id/tady_volba"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton android:id="@+id/tady_ano" style="@style/VzhledVolba" android:text="@string/tady_ano" />
+            <RadioButton android:id="@+id/tady_ne" style="@style/VzhledVolba" android:text="@string/tady_ne" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/vzhled_pozn"
+            android:textColor="@color/tlumeny"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/hotovo"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="4dp"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:text="@string/hotovo" />
+    </LinearLayout>
+</ScrollView>

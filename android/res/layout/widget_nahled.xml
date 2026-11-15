@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Náhled ve výběru widgetů a v dialogu přidání na plochu (bez skutečné karty), vzhled jako widget.xml:
+     černý widget, svítí jen bílá plocha kódu, název a sluníčko odsazené od zakulacených rohů launcheru. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/widget_pozadi"
+        android:tint="#000000"
+        android:importantForAccessibility="no" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/w_radek"
+            android:paddingTop="@dimen/w_radek_nahore"
+            android:paddingStart="10dp"
+            android:paddingEnd="23dp"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:text="@string/nazev"
+            android:textSize="@dimen/w_nazev_text"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:maxLines="1" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="@dimen/w_cislo"
+            android:background="@drawable/widget_panel"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/nahled_kod"
+            android:importantForAccessibility="no" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="@dimen/w_slunce_dotyk"
+        android:layout_height="@dimen/w_slunce_dotyk"
+        android:layout_gravity="top|end"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="14dp"
+        android:paddingBottom="18dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/slunce"
+        android:tint="#FFFFFF"
+        android:importantForAccessibility="no" />
+</FrameLayout>

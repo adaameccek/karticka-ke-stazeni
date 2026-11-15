@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget: nahoře název a sluníčko, pod nimi kód, pod ním číslo. Svítí jen bílá plocha kódu.
+     Výchozí je průhledné pozadí (Vzhled widgetu): na tapetě zůstane jen bílá plocha kódu, bílé písmo má proto
+     stín, ať je vidět i na světlé tapetě; černé pozadí jde zapnout. Když svítí sluníčko, běží vedle něj odpočet.
+     Velikost písma názvu i čísla (ve větším widgetu větší, dlouhé menší) nastavuje Widget.java.
+     Samsung One UI zakulatí okraj každého widgetu po svém a nedá se to vypnout: kolem je proto všude černo
+     (roh na černé tapetě nejde vidět) a Widget.java odsune název, sluníčko, kód i číslo od rohů tak,
+     aby je zakulacení neuseklo. Rozměry v dimens.xml, podle nich Widget.java kreslí kód. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/koren"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- rámeček: obrázek, protože jeho barvu jde ve widgetu měnit na každém Androidu.
+         Id background s clipToOutline launcheru říká, že rohy si widget kreslí sám (Pixel to dodrží, One UI ne). -->
+    <ImageView
+        android:id="@android:id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToOutline="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/widget_pozadi"
+        android:importantForAccessibility="no" />
+
+    <!-- název, kód a číslo u sebe: co kódu zbyde nad a pod ním, dá Widget.java jako okraj nad a pod celou skupinu -->
+    <LinearLayout
+        android:id="@+id/obsah"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- okraje od rohů, výšku řádku a velikost písma (ve velkém widgetu větší, dlouhý název menší)
+             nastavuje Widget.java -->
+        <TextView
+            android:id="@+id/nazev"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/w_radek"
+            android:paddingTop="@dimen/w_radek_nahore"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:textSize="@dimen/w_nazev_text"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:shadowColor="#CC000000"
+            android:shadowRadius="3"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+        <!-- plocha kódu: okraje od rohů nastavuje Widget.java -->
+        <FrameLayout
+            android:id="@+id/plocha"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <!-- kód: Widget.java ho kreslí přesně na tuhle plochu (hrany na celé pixely), tady se jen vycentruje -->
+            <ImageView
+                android:id="@+id/kod"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:visibility="gone"
+                android:importantForAccessibility="no" />
+
+            <TextView
+                android:id="@+id/prazdne"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="2dp"
+                android:textSize="11dp"
+                android:textColor="#B4B9C2"
+                android:shadowColor="#CC000000"
+                android:shadowRadius="3"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="6dp"
+                android:autoSizeMaxTextSize="11dp"
+                android:autoSizeStepGranularity="1dp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/cislo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/w_cislo"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:fontFamily="monospace"
+            android:textColor="#FFFFFF"
+            android:shadowColor="#CC000000"
+            android:shadowRadius="3"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:textSize="@dimen/w_cislo_text"
+            android:maxLines="1"
+            android:visibility="gone" />
+
+        <!-- „Jsem v prodejně" ve velkém widgetu u obchodu, kde místo ještě není potvrzené (Widget.java):
+             vyplněné tlačítko uprostřed, nad spodním okrajem, ať ho zakulacení rohů neusekne -->
+        <FrameLayout
+            android:id="@+id/tady_radek"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/w_tady_radek"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tady"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/w_tady"
+                android:layout_gravity="top|center_horizontal"
+                android:background="@drawable/widget_tady"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="@string/tady"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- odpočet jasu vlevo od sluníčka, jen když svítí; odsazení, výšku a písmo nastavuje Widget.java -->
+    <TextView
+        android:id="@+id/zbyva"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/w_radek"
+        android:layout_gravity="top|end"
+        android:paddingTop="@dimen/w_radek_nahore"
+        android:gravity="center_vertical|end"
+        android:includeFontPadding="false"
+        android:textSize="@dimen/w_nazev_text"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#CC000000"
+        android:shadowRadius="3"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:fontFeatureSettings="tnum"
+        android:maxLines="1"
+        android:visibility="gone"
+        android:importantForAccessibility="no" />
+
+    <!-- „Jsem v prodejně" v nízkém widgetu (Widget.java): menší vyplněné tlačítko vpravo v řádku s názvem, vlevo od
+         odpočtu a sluníčka; odsazení, výšku, šířku a písmo nastavuje Widget.java, plocha na klepnutí sahá kousek
+         pod tlačítko -->
+    <FrameLayout
+        android:id="@+id/tady_nahore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:paddingTop="@dimen/w_radek_nahore"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tady_n"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/w_tady_n"
+            android:layout_gravity="top|end"
+            android:background="@drawable/widget_tady_maly"
+            android:paddingStart="7dp"
+            android:paddingEnd="7dp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="@string/tady"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:maxLines="1"
+            android:ellipsize="end" />
+    </FrameLayout>
+
+    <!-- sluníčko v pravém horním rohu (Jas podle pravého horního rohu téhle plochy pozná, kde je widget):
+         ikona 12 dp (ve velkém widgetu větší) v řádku s názvem, plocha na klepnutí větší, odsazení od rohu
+         nastavuje Widget.java -->
+    <ImageView
+        android:id="@+id/jas"
+        android:layout_width="@dimen/w_slunce_dotyk"
+        android:layout_height="@dimen/w_slunce_dotyk"
+        android:layout_gravity="top|end"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="14dp"
+        android:paddingBottom="18dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/slunce"
+        android:contentDescription="@string/jas_popis" />
+</FrameLayout>

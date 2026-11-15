@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vzhled widgetu: pod náhledem průhledného widgetu barevná „tapeta", ať je vidět, co z widgetu na ploše zůstane -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient android:angle="315" android:startColor="#2F7266" android:centerColor="#6DC0B0" android:endColor="#666CAB" />
+    <corners android:radius="12dp" />
+</shape>

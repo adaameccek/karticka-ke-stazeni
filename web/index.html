@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Kartička pro Android a iPhone</title>
+<meta name="description" content="Kartička: věrnostní karty, které se ukážou samy. Widget na plochu, karty celého nákupního centra i karty z appek obchodů.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kartička">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:title" content="Kartička">
+<meta property="og:description" content="Věrnostní karty v mobilu. U pokladny ukáže tu správnou sama.">
+<meta property="og:url" content="https://karticka.adamhorak.cz/">
+<meta property="og:image" content="https://karticka.adamhorak.cz/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Růžová věrnostní karta s čárovým kódem a nápis Kartička">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0A0A0C">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="/obr/hlavni.webp" type="image/webp" fetchpriority="high">
+<!-- Vygenerováno z tools/stahnout.sablona.html přes python -I tools/stranka.py (verze, velikost, počet prodejen, QR).
+     Tenhle soubor needitovat ručně, změny patří do šablony. Obrázky v obr/ dělá python -I tools/obrazky.py
+     ze snímků appky s vymyšlenými kartami. Vzhled bere z ikony appky (růžová) a z černého widgetu:
+     tmavá stránka, málo textu, obrázky. Bez štítků a ohraničených kapslí, systémové písmo (nic se nestahuje). -->
+<style>
+  :root {
+    --stranka: #0A0A0C; --plocha: #151519; --linka: #26262C;
+    --text: #F5F5F7; --tlumeny: #A1A1AA; --ruzova: #E75294; --ruzova-hover: #EF68A6;
+    --tlacitko: #232329; --tlacitko-hover: #2C2C33;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; min-height: 100vh; min-height: 100dvh; overflow-x: hidden; background: var(--stranka); color: var(--text);
+    font: 400 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  main { width: 100%; max-width: 1100px; margin: 0 auto; padding: max(22px, env(safe-area-inset-top)) 20px max(32px, env(safe-area-inset-bottom)); }
+  a { color: var(--ruzova); }
+  :focus-visible { outline: 2px solid var(--ruzova); outline-offset: 3px; }
+  img { display: block; max-width: 100%; height: auto; }
+
+  .znacka { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+  .znacka img { width: 30px; height: 30px; }
+
+  h1 { margin: 44px 0 0; font-size: clamp(38px, 10.6vw, 66px); line-height: 1.02; font-weight: 800; letter-spacing: -.035em; text-wrap: balance; }
+  h1 span { color: var(--ruzova); }
+  .uvod { margin: 16px 0 0; max-width: 30em; font-size: 19px; line-height: 1.4; color: var(--tlumeny); }
+
+  /* dvě tlačítka vedle sebe: Android stáhne APK, iPhone otevře webovou Kartičku (od 5.11.2026).
+     Růžové je to pro telefon, na kterém stránka běží, na počítači Android. */
+  .tlacitka { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; max-width: 400px; margin-top: 28px; }
+  .stahnout {
+    display: flex; align-items: center; justify-content: center; gap: 10px; min-width: 0; min-height: 64px;
+    padding: 10px 12px; border-radius: 16px; background: var(--tlacitko); color: var(--text); text-decoration: none;
+  }
+  .stahnout svg { flex: none; width: 26px; height: 26px; }
+  .stahnout span { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
+  .stahnout small { font-size: 12px; font-weight: 500; opacity: .78; }
+  .stahnout b { font-size: 19px; font-weight: 700; letter-spacing: -.01em; }
+  .stahnout:hover { background: var(--tlacitko-hover); }
+  .stahnout.hlavni { background: var(--ruzova); color: #fff; box-shadow: 0 10px 34px -10px rgba(231, 82, 148, .65); }
+  .stahnout.hlavni:hover { background: var(--ruzova-hover); }
+  .stahnout:active { opacity: .9; }
+
+  /* údaj pod tlačítkem a nápověda po stažení sdílí jedno místo (mřížka), stránka se tím nepohne */
+  .misto { display: grid; width: 100%; max-width: 400px; margin-top: 12px; font-size: 14px; text-align: center; color: var(--tlumeny); }
+  .misto > p { grid-area: 1 / 1; margin: 0; }
+  .misto .po { visibility: hidden; color: var(--text); }
+  .misto.stazeno .info { visibility: hidden; }
+  .misto.stazeno .po { visibility: visible; }
+
+  .qr { display: none; }
+  .qr .kod { flex: none; padding: 10px; border-radius: 14px; background: #fff; line-height: 0; }
+  /* kód v přirozené velikosti (5 px na modul), jinak vyjdou čtverečky nestejné a čtečka ho nepřečte */
+  .qr .kod svg { display: block; width: auto; height: auto; shape-rendering: crispEdges; }
+
+  /* telefon se snímkem appky, dole se rozplyne do stránky */
+  .telefon-misto { position: relative; display: grid; justify-items: center; width: 100%; margin-top: 44px; }
+  .telefon-misto::before {
+    content: ""; position: absolute; inset: 6% 0 20%; z-index: 0;
+    background: radial-gradient(closest-side, rgba(231, 82, 148, .32), transparent);
+  }
+  .telefon {
+    position: relative; z-index: 1; width: min(300px, 78vw); padding: 9px; border-radius: 46px;
+    background: #1C1C21; box-shadow: inset 0 0 0 1px #34343B;
+    -webkit-mask-image: linear-gradient(#000 64%, transparent 97%); mask-image: linear-gradient(#000 64%, transparent 97%);
+  }
+  .telefon img { width: 100%; border-radius: 37px; }
+
+  h2 { margin: 24px 0 0; font-size: clamp(28px, 7.4vw, 42px); line-height: 1.08; font-weight: 800; letter-spacing: -.03em; }
+  .dlazdice { display: grid; gap: 16px; margin-top: 24px; }
+  .dlazdice article { overflow: hidden; border-radius: 24px; background: var(--plocha); }
+  .dlazdice img { width: 100%; aspect-ratio: 1080 / 920; object-fit: cover; }
+  .dlazdice .popis { padding: 18px 22px 22px; }
+  h3 { margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -.01em; }
+  .dlazdice p { margin: 6px 0 0; font-size: 16px; line-height: 1.45; color: var(--tlumeny); }
+
+  .cisla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 56px 0 0; padding: 0; list-style: none; text-align: center; }
+  .cisla b { display: block; font-size: clamp(26px, 8vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: -.03em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .cisla span { display: block; margin-top: 4px; font-size: 14px; line-height: 1.3; color: var(--tlumeny); }
+
+  details { margin-top: 56px; border-radius: 20px; background: var(--plocha); }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; padding: 0 22px; font-size: 17px; font-weight: 700; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary svg { flex: none; width: 20px; height: 20px; color: var(--tlumeny); transition: transform .2s; }
+  details[open] summary svg { transform: rotate(180deg); }
+  ol { margin: 0; padding: 0 22px 20px; list-style: none; counter-reset: krok; }
+  ol li { position: relative; padding: 0 0 12px 2em; counter-increment: krok; font-size: 16px; color: var(--tlumeny); }
+  ol li::before { content: counter(krok); position: absolute; left: 0; top: -.05em; font-size: 18px; font-weight: 700; color: var(--ruzova); }
+  ol li:last-child { padding-bottom: 0; }
+  ol b { font-weight: 600; color: var(--text); }
+  details + details { margin-top: 12px; }
+  .zmeny { padding: 0 22px 20px; }
+  .zmeny h3 { margin: 0; font-size: 15px; font-weight: 700; }
+  .zmeny h3 ~ h3 { margin-top: 16px; }
+  .zmeny ul { margin: 6px 0 0; padding: 0 0 0 1.1em; font-size: 16px; color: var(--tlumeny); }
+  .zmeny li + li { margin-top: 4px; }
+  .zmeny li::marker { color: var(--ruzova); }
+  .zmeny-pozn { margin: 16px 0 0; font-size: 14px; line-height: 1.5; color: var(--tlumeny); }
+  .ios-pozn { margin: 0; padding: 0 22px 20px; font-size: 14px; line-height: 1.5; color: var(--tlumeny); }
+
+  .soukromi { margin: 40px 0 0; font-size: 14px; line-height: 1.5; color: var(--tlumeny); }
+  footer { margin-top: 24px; font-size: 13px; color: var(--tlumeny); }
+  footer a { color: var(--tlumeny); }
+
+  @media (min-width: 720px) {
+    .dlazdice { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .dlazdice .popis { padding: 18px 20px 22px; }
+  }
+  /* počítač: text a QR vlevo, telefon vpravo (QR na telefonu nedává smysl, tam se nezobrazuje) */
+  @media (min-width: 900px) {
+    main { padding-left: 40px; padding-right: 40px; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) 360px; column-gap: 56px; align-items: center; margin-top: 36px; }
+    .telefon-misto { margin-top: 0; }
+    .telefon { width: 320px; }
+    h1 { margin-top: 0; }
+    .qr { display: flex; align-items: center; gap: 16px; margin-top: 32px; font-size: 15px; color: var(--tlumeny); }
+    .qr b { color: var(--text); font-weight: 600; }
+    h2 { margin-top: 8px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="znacka"><img src="/icon.svg" alt="" width="30" height="30">Kartička</div>
+
+  <section class="hero">
+    <div class="hero-text">
+    <h1>Věrnostní karty, které se <span>ukážou samy.</span></h1>
+    <p class="uvod">Přijdeš do obchodu a správná karta už čeká nahoře.</p>
+
+    <div class="tlacitka">
+      <a class="stahnout hlavni" id="stahnout" href="/karticka.apk?v=457131" download="karticka.apk">
+        <svg viewBox="2 6 20 15" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M3 19.5a9 9 0 0 1 18 0H3zm5.5-3.3a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4zm7 0a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M7.4 11.9 5.6 8.9M16.6 11.9l1.8-3"/></svg>
+        <span><small>Stáhnout pro</small><b>Android</b></span>
+      </a>
+      <a class="stahnout" id="iphone" href="/app/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10.5 5h3"/></svg>
+        <span><small>Stáhnout pro</small><b>iPhone</b></span>
+      </a>
+    </div>
+    <script>
+      // na iPhonu je růžové tlačítko pro iPhone (běží hned, ať tlačítka po načtení neproblikají)
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) {
+        document.getElementById("stahnout").classList.remove("hlavni");
+        document.getElementById("iphone").classList.add("hlavni");
+      }
+    </script>
+    <div class="misto" id="misto">
+      <p class="info">Zdarma · 1,3 MB · Android 8 a novější<br>Na iPhonu přes Safari, Přidat na plochu</p>
+      <p class="po" role="status">Staženo. V Chromu ⋮, Stažené soubory, karticka.apk.</p>
+    </div>
+
+    <div class="qr">
+      <div class="kod"><svg viewBox="0 0 145 145" role="img" aria-label="QR kód na https://karticka.adamhorak.cz/" xmlns="http://www.w3.org/2000/svg" width="145" height="145" class="qr-kod"><path transform="scale(5)" class="qrline" stroke="#1b1e24" d="M0 0.5h7m2 0h5m4 0h1m3 0h7m-29 1h1m5 0h1m5 0h3m1 0h5m1 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m3 0h1m4 0h1m1 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m2 0h3m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h3m1 0h1m2 0h2m5 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m1 0h1m3 0h1m4 0h3m2 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h1m1 0h1m1 0h1m2 0h3m-18 1h1m2 0h1m1 0h1m1 0h3m2 0h5m1 0h3m1 0h2m1 0h1m-26 1h3m1 0h1m3 0h2m2 0h1m1 0h2m3 0h1m1 0h7m-25 1h1m1 0h6m1 0h3m1 0h2m1 0h2m1 0h1m1 0h1m2 0h1m-29 1h1m3 0h1m3 0h2m2 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h2m-28 1h1m3 0h4m1 0h3m1 0h1m2 0h1m2 0h1m2 0h1m1 0h1m2 0h1m-26 1h2m5 0h1m2 0h1m3 0h2m3 0h1m1 0h1m1 0h1m1 0h1m-26 1h6m2 0h2m1 0h2m4 0h1m3 0h1m3 0h1m-28 1h1m1 0h2m3 0h1m1 0h1m1 0h1m2 0h3m1 0h1m3 0h1m1 0h1m1 0h1m-27 1h4m1 0h1m2 0h3m5 0h2m1 0h2m5 0h2m-29 1h3m1 0h2m1 0h1m1 0h1m1 0h3m2 0h3m2 0h4m1 0h1m1 0h1m-23 1h2m1 0h1m2 0h2m2 0h2m2 0h1m7 0h1m-27 1h2m3 0h5m5 0h2m5 0h2m1 0h1m-28 1h3m1 0h3m1 0h1m1 0h3m1 0h2m1 0h1m1 0h7m1 0h2m-21 1h1m6 0h6m3 0h1m1 0h1m1 0h1m-29 1h7m2 0h3m2 0h2m2 0h3m1 0h1m1 0h1m2 0h2m-29 1h1m5 0h1m2 0h1m3 0h2m1 0h5m3 0h2m2 0h1m-29 1h1m1 0h3m1 0h1m1 0h3m1 0h1m2 0h1m2 0h7m-25 1h1m1 0h3m1 0h1m2 0h1m1 0h2m1 0h1m3 0h1m4 0h1m1 0h3m-28 1h1m1 0h3m1 0h1m8 0h2m2 0h3m3 0h1m1 0h2m-29 1h1m5 0h1m1 0h1m1 0h2m2 0h5m1 0h4m1 0h1m1 0h2m-29 1h7m3 0h1m2 0h1m3 0h1m2 0h1m1 0h1m1 0h2m1 0h1"/></svg></div>
+      <div><b>Jsi na počítači?</b><br>Naskenuj kód telefonem.</div>
+    </div>
+    </div>
+
+    <div class="telefon-misto">
+      <div class="telefon">
+        <img src="/obr/hlavni.webp" width="1080" height="2063" fetchpriority="high"
+             alt="Kartička u prodejny: nahoře karta dm s čárovým kódem, pod ní další obchody v centru a seznam karet">
+      </div>
+    </div>
+  </section>
+
+  <h2>Co jinde nenajdeš</h2>
+  <div class="dlazdice">
+    <article>
+      <img src="/obr/widget.webp" width="1080" height="920" loading="lazy" decoding="async"
+           alt="Dva widgety na ploše telefonu s kartou dm a čárovým kódem">
+      <div class="popis">
+        <h3>Karta přímo na ploše</h3>
+        <p>Widget se přepne podle obchodu. Kartu změníš i rozsvítíš bez otevření appky.</p>
+      </div>
+    </article>
+    <article>
+      <img src="/obr/centrum.webp" width="1080" height="920" loading="lazy" decoding="async"
+           alt="Karta Albert a pod ní řádek Taky tady s dalšími obchody v centru">
+      <div class="popis">
+        <h3>Celé nákupní centrum</h3>
+        <p>Nabídne karty všech obchodů v budově, ne jen toho nejbližšího.</p>
+      </div>
+    </article>
+    <article>
+      <img src="/obr/appka.webp" width="1080" height="920" loading="lazy" decoding="async"
+           alt="Karta McDonald's s tlačítkem Otevřít appku McDonald's">
+      <div class="popis">
+        <h3>I karty z appek</h3>
+        <p>Otevře appku obchodu. McDonald's rovnou na kódu pro pokladnu.</p>
+      </div>
+    </article>
+  </div>
+
+  <ul class="cisla">
+    <li><b>1,3 MB</b><span>celá appka</span></li>
+    <li><b>13 200+</b><span>prodejen v mapě</span></li>
+    <li><b>0</b><span>reklam a registrací</span></li>
+  </ul>
+
+  <details>
+    <summary>Jak nainstalovat na Android
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <ol>
+      <li><b>Stáhni soubor.</b> Když se Chrome zeptá, potvrď.</li>
+      <li><b>Otevři ho.</b> Chrome ⋮, Stažené soubory, karticka.apk.</li>
+      <li><b>Povol instalaci z Chromu.</b> Android se ptá jen napoprvé.</li>
+      <li><b>Klepni na Instalovat.</b> Play Protect: Podrobnosti, Přesto nainstalovat.</li>
+    </ol>
+  </details>
+
+  <details>
+    <summary>Jak dát na iPhone
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <ol>
+      <li><b>Klepni na iPhone.</b> Kartička se otevře v Safari.</li>
+      <li><b>Dole klepni na Sdílet.</b> V novém iOS je pod tlačítkem ⋯.</li>
+      <li><b>Dej Přidat na plochu.</b> Pak vpravo nahoře Přidat.</li>
+      <li><b>Otevírej ji z plochy.</b> Karty přidávej až tam, Safari je má zvlášť.</li>
+    </ol>
+    <p class="ios-pozn">Na iPhonu je Kartička bez widgetu a hesel k účtům. Správná karta se ukáže, když appku otevřeš.</p>
+  </details>
+
+  <details>
+    <summary>Co je nového
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <div class="zmeny">
+      <h3>14.11.2026</h3>
+      <ul><li>Nový obchod Laser Game Pardubice na Dubině s logem, kartu pozná podle polohy</li><li>Tlačítko Razítka a odměny u karty Laser Game, s osobním odkazem karty rovnou na tvoje razítka</li></ul>
+      <h3>9.11.2026</h3>
+      <ul><li>Karty jdou ukázat i na zamčené obrazovce: jen kódy, úpravy, hesla a PINy až po odemknutí</li><li>PIN karty (třeba dm) uložený zamčeně, ukáže se až po otisku</li><li>Tmavý vzhled po západu slunce, kód zůstává černý na bílé</li><li>Widget se řídí jen čerstvou polohou a v obchoďáku pozná patro podle Wi-Fi</li><li>Samočinná záloha karet do složky Stažené/Karticka</li><li>Zkratky po podržení ikony, dlaždice v horní liště a sdílení fotky karty do Kartičky</li><li>Přehlednější Nastavení a doplnění hesel z exportu správce hesel</li><li>Conad a Česká pošta otevřou svou appku (HeyConad, Pošta Online), Albi, Nutrend, Mensa, Motiko, OXO a Calvin Klein jejich web</li><li>Vlastní karta s něčím navíc v názvu (třeba Pardubická karta 2030) má tlačítko i leták svého obchodu</li><li>Atomic Matcha má logo a appka zná i jejich kavárnu na Žižkově (Seifertova)</li><li>Seznam změn u nové verze se načte spolehlivěji</li></ul>
+      <h3>5.11.2026</h3>
+      <ul><li>Karty jsou seřazené přesně podle toho, jak blízko je jejich nejbližší prodejna</li><li>Mapa okolí jde nahoře otevřít vždy a šipkou vedle karty zjistíš polohu znovu, když appka ukáže vedlejší obchod</li><li>V Nastavení si vybereš, kolik nejbližších obchodů a do jaké vzdálenosti se nahoře ukáže</li><li>Nové karty Mondieu a Pardubická karta, opravená loga České pošty a dalších obchodů</li></ul>
+      <h3>3.11.2026</h3>
+      <ul><li>Aktualizace přímo v appce: v Nastavení je vidět, jestli je nová verze a co se v ní změnilo, a jedním klepnutím se stáhne a nainstaluje</li><li>Pruh o nové verzi vyjíždí, dokud ho nezavřeš, a u Nastavení svítí tečka</li><li>Hlídat polohu jde i každou sekundu, prodejna pak naskočí hned, jak do ní vejdeš</li><li>Haptický podnět: zatřes telefonem tam a zpátky, krátce zavrní a otevře se podnět</li><li>Karta s dlouhým QR kódem (třeba Mensa) ukazuje pod kódem číslo karty</li></ul>
+      <p class="zmeny-pozn">Novou verzi pozná i appka sama: v Nastavení, Aktualizace se stáhne a nainstaluje přes tu starou, karty zůstanou.</p>
+    </div>
+  </details>
+
+  <p class="soukromi">Aby se karta ukázala sama, chce appka polohu i na pozadí (Povolit vždy). Poloha zůstává v telefonu, odchází jen to, co mapě pomáhá: u kterých obchodů jsi kartu ukázal (značka, místo na zhruba 10 metrů, poslední den, počet ukázání, vzdálenost od známé prodejny), kód instalace a verze appky. Čísla karet, kódy ani jméno neodchází a v Nastavení se to dá vypnout. Na iPhonu neodchází nic, poloha se zjišťuje, jen když je appka otevřená. Mapa stahuje dlaždice z OpenStreetMap.</p>
+
+  <footer>Verze 14.11.2026 10:51 · Mapa obchodů © <a href="https://www.openstreetmap.org/copyright" rel="noopener">přispěvatelé OpenStreetMap</a></footer>
+</main>
+<script>
+  // Chrome malý soubor stáhne dřív, než si toho člověk všimne, a nic výrazného neukáže. Druhé klepnutí pak
+  // jen nabídne "Stáhnout soubor znovu?". Proto po klepnutí stránka sama řekne, kde soubor najít.
+  document.getElementById("stahnout").addEventListener("click", function () {
+    setTimeout(function () {
+      document.getElementById("misto").classList.add("stazeno");
+    }, 1200);
+  });
+</script>
+</body>
+</html>

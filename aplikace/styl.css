@@ -1,0 +1,1301 @@
+/* Kartička - vzhled. Světlé, systémové písmo, akcent růžová. Šířky kódů v app.js počítají s okrajem 16 px (sirkaObsahu). */
+
+:root {
+  --pozadi: #F4F5F7;
+  --plocha: #FFFFFF;
+  --text: #1B1E24;
+  --tlumeny: #616875;
+  --linka: #E3E6EA;
+  --sede: #E6E8EC;
+  --akcent: #E75294;
+  --odkaz: #B8296A;
+  --zelena: #57AB27;
+  --chyba: #C8314B;
+  --chyba-svetla: #FBE9EC;
+  --stin: 0 1px 2px rgba(17, 19, 24, .06), 0 4px 14px rgba(17, 19, 24, .07);
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--pozadi);
+  color: var(--text);
+  font: 400 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+body.ma-vrstvu { overflow: hidden; }
+
+h1, h2, h3, p { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+
+/* ---------- ikony ---------- */
+
+.ik { display: inline-flex; width: 20px; height: 20px; flex: none; }
+.ik svg { width: 100%; height: 100%; }
+
+.ikona {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex: none;
+}
+.ikona .ik { width: 24px; height: 24px; }
+.ikona:active { background: rgba(17, 19, 24, .08); }
+
+/* ---------- hlavní obrazovka ---------- */
+
+.hlava {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: calc(8px + env(safe-area-inset-top)) max(8px, calc(50% - 312px)) 6px;
+  background: var(--pozadi);
+}
+.hlava h1 {
+  flex: 1;
+  margin-left: 8px;
+  font-size: 24px;
+  font-weight: 750;
+  letter-spacing: -.01em;
+}
+
+.obsah {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 4px 16px calc(32px + env(safe-area-inset-bottom));
+}
+
+#tady:empty { display: none; }
+#tady { margin-bottom: 8px; }
+
+.tady-radek {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  padding: 6px 2px 10px;
+  color: var(--tlumeny);
+  font-size: 15px;
+}
+.tady-radek .ik { width: 18px; height: 18px; }
+/* „Nejbližší …“ je tlačítko: otevře mapu okolí */
+.tady-mapa { width: 100%; flex-wrap: nowrap; text-align: left; }
+.tady-mapa > span:not(.ik) { flex: 1; min-width: 0; }
+.tady-mapa b { color: var(--odkaz); font-weight: 600; }
+.tady-mapa > .ik:last-child { color: var(--odkaz); }
+.tady-mapa:active { opacity: .6; }
+
+.tady-popis {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 2px 10px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.tecka { width: 9px; height: 9px; border-radius: 50%; background: var(--zelena); flex: none; }
+
+/* Vpravo nahoře: mapa okolí a Zjistit polohu znovu. Záporný okraj: větší plocha na prst, řádek se nezvětší. */
+.tady-blizko { display: flex; align-items: center; gap: 2px; }
+.tady-blizko > .tady-mapa { flex: 1; min-width: 0; }
+.tady-akce { display: flex; margin-left: auto; flex: none; }
+.tady-ikona {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: -10px 0;
+  border-radius: 50%;
+  color: var(--odkaz);
+  flex: none;
+}
+.tady-blizko > .tady-ikona { margin: -4px -6px 0 0; align-self: flex-start; }
+.tady-ikona .ik { width: 20px; height: 20px; }
+.tady-ikona:active { background: var(--sede); }
+.tady-znovu.tocim .ik { animation: tocim .9s linear infinite; }
+@keyframes tocim { to { transform: rotate(-360deg); } }
+.tady-vek { margin-left: 6px; color: var(--tlumeny); font-size: 13px; font-weight: 400; white-space: nowrap; }
+.tady-popis > .ik { width: 18px; height: 18px; color: var(--tlumeny); }
+.tady-nadpis { min-width: 0; }
+.tady-obchody { margin-bottom: 12px; }
+.tady-obchody .volba { min-height: 52px; }
+
+/* Velká karta obchodu, u kterého stojíš. Bílý panel s kódem: 10 px okraj karty + 10 px panelu = 20 px (app.js: -40). */
+.hero {
+  display: block;
+  width: 100%;
+  padding: 14px 10px 10px;
+  border-radius: 20px;
+  background: var(--b);
+  color: var(--t);
+  text-align: center;
+  box-shadow: var(--stin);
+}
+.hero-pruh {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 12px;
+  font-size: 19px;
+  font-weight: 700;
+  text-align: left;
+}
+.hero-nazev { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Logo obchodu: bílý čtvereček, ať je logo vidět na jakékoli barvě karty (soubory v loga/, přibalené v appce). */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 3px;
+  border-radius: 8px;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 1px rgba(17, 19, 24, .08);
+  flex: none;
+  overflow: hidden;
+}
+.logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.logo.radek { width: 42px; height: 42px; padding: 4px; border-radius: 10px; }
+.logo.male, .mini.male { width: 28px; height: 28px; padding: 2px; border-radius: 7px; }
+.vrstva-hlava .logo { margin-right: 6px; }
+.hero-kod {
+  display: block;
+  padding: 16px 10px 10px;
+  border-radius: 12px 12px 0 0;
+  background: #FFFFFF;
+}
+.hero-cislo {
+  display: block;
+  overflow-wrap: anywhere;
+  padding: 0 10px 12px;
+  border-radius: 0 0 12px 12px;
+  background: #FFFFFF;
+  color: var(--text);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .08em;
+}
+/* Karta v appce obchodu: místo kódu bílá plocha s tlačítkem, klepnutí otevře appku */
+.hero-appka {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 88px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #FFFFFF;
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 600;
+}
+.hero-appka .ik { width: 24px; height: 24px; }
+
+.taky {
+  padding: 12px 2px 0;
+  color: var(--tlumeny);
+  font-size: 15px;
+}
+
+/* ---------- kódy ---------- */
+
+.kod-img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+.kod-nahradni {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 6px;
+  background: repeating-linear-gradient(90deg, #1B1E24 0 2px, transparent 2px 5px, #1B1E24 5px 6px, transparent 6px 9px);
+  opacity: .18;
+  color: transparent;
+  font-size: 0;
+}
+.kod-chyba, .kod-prazdny {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  padding: 8px;
+  color: var(--tlumeny);
+  font-size: 14px;
+  text-align: center;
+}
+.kod-chyba { color: var(--chyba); }
+
+/* ---------- seznam karet ---------- */
+
+.nadpis {
+  margin: 20px 2px 12px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.mrizka {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (min-width: 520px) {
+  .mrizka { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.karta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  aspect-ratio: 1.586;
+  padding: 12px 13px;
+  border-radius: 14px;
+  background: var(--b);
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, 0) 55%, rgba(0, 0, 0, .06));
+  color: var(--t);
+  text-align: left;
+  box-shadow: var(--stin);
+  overflow: hidden;
+}
+.karta:active { filter: brightness(.94); }
+.karta-hlava { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+.karta-hlava .logo { width: 30px; height: 30px; }
+.karta-nazev {
+  flex: 1;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.karta-hvezda { flex: none; margin-top: 1px; }
+.karta-hvezda .ik { width: 16px; height: 16px; }
+.karta-hvezda svg, .hvezda[aria-pressed="true"] svg { fill: currentColor; }
+
+/* hledání v Moje karty: stejné pole jako ve výběru obchodu, jen nepřilepené nahoře */
+.hledat.v-seznamu { position: static; margin: 0 0 12px; padding: 0 12px; }
+.hledat.v-seznamu::before { inset: 0; }
+.nic { margin: 0 2px 12px; }
+
+.karta-cislo {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  opacity: .9;
+}
+
+.karta.pridat {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--sede);
+  color: var(--tlumeny);
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+.karta.pridat .ik { width: 26px; height: 26px; }
+
+/* prázdný stav */
+.prazdno {
+  padding: 36px 8px 24px;
+  text-align: center;
+}
+.prazdno h2 { margin-top: 26px; font-size: 22px; font-weight: 700; }
+.prazdno p { max-width: 340px; margin: 10px auto 24px; color: var(--tlumeny); }
+
+.vejir { position: relative; width: 190px; height: 120px; margin: 0 auto; }
+.vejir span {
+  position: absolute;
+  left: 40px;
+  top: 22px;
+  width: 112px;
+  height: 71px;
+  border-radius: 11px;
+  box-shadow: var(--stin);
+  transform-origin: 50% 120%;
+}
+.vejir span:nth-child(1) { background: #57AB27; transform: rotate(-16deg); }
+.vejir span:nth-child(2) { background: #1B1E24; transform: rotate(0deg); }
+.vejir span:nth-child(3) { background: var(--akcent); transform: rotate(16deg); }
+
+/* ---------- tlačítka a odkazy ---------- */
+
+.tlacitko {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: var(--sede);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+}
+.tlacitko:active { filter: brightness(.94); }
+.tlacitko.hlavni { background: var(--text); color: #FFFFFF; }
+.tlacitko.hlavni:active { filter: brightness(1.25); }
+.tlacitko.nebezpeci { background: var(--chyba-svetla); color: var(--chyba); }
+.tlacitko.velke {
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 58px;
+  padding: 12px 18px;
+  font-size: 16px;
+}
+.tlacitko.velke .ik { width: 22px; height: 22px; }
+.tlacitko.siroke { width: 100%; margin-top: 12px; }
+
+.odkaz {
+  display: inline;
+  color: var(--odkaz);
+  font-weight: 600;
+  text-align: left;
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+.odkaz:active { opacity: .6; }
+
+/* ---------- vrstvy přes celou obrazovku ---------- */
+
+.vrstva {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  background: var(--pozadi);
+  transform: translateX(100%);
+  transition: transform .25s cubic-bezier(.2, .8, .2, 1);
+  will-change: transform;
+}
+.vrstva.otevrena { transform: none; }
+.vrstva.bez, .dialog-pozadi.bez, .dialog-pozadi.bez .dialog { transition: none; }
+
+.vrstva-hlava {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 56px;
+  padding: calc(6px + env(safe-area-inset-top)) max(8px, calc(50% - 312px)) 6px;
+  background: var(--b, var(--pozadi));
+  color: var(--t, var(--text));
+  flex: none;
+}
+.vrstva-hlava h2 {
+  flex: 1;
+  min-width: 0;
+  font-size: 19px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vrstva-hlava .ikona:active { background: rgba(127, 127, 127, .2); }
+
+.vrstva-telo {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px max(16px, calc(50% - 304px)) calc(32px + env(safe-area-inset-bottom));
+}
+.vrstva-telo > * + * { margin-top: 14px; }
+
+/* detail karty: barva karty nahoře, bílý panel s kódem (16 px okraj, app.js: -32) */
+.detail .vrstva-telo {
+  background: linear-gradient(var(--b) 0 96px, var(--pozadi) 96px);
+  background-attachment: local;
+}
+.detail-kod {
+  position: relative;
+  cursor: pointer;
+  padding: 10px 16px 16px;
+  border-radius: 18px;
+  background: #FFFFFF;
+  text-align: center;
+  box-shadow: var(--stin);
+}
+/* velké sluníčko s popiskem nad kódem (do kódu nezasahuje): klepnutí kamkoli na kód dá jas naplno, sluníčko pak svítí žlutě.
+   Oba popisky leží přes sebe, takže se při rozsvícení nic neposune. */
+.detail-slunce {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  margin-bottom: 10px;
+  color: var(--tlumeny);
+  font-size: 15px;
+  font-weight: 600;
+}
+.slunce-kruh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #F1F2F4;
+  color: #6B717D;
+  transition: background-color .2s ease, color .2s ease;
+}
+.slunce-kruh .ik { width: 28px; height: 28px; }
+.slunce-text { display: grid; text-align: left; }
+.slunce-text > span { grid-area: 1 / 1; }
+.jas-zap, .jas-miru { font-variant-numeric: tabular-nums; }
+.jas-zap, .jas-miru, .svit .jas-vyp { visibility: hidden; }
+.svit .jas-zap { visibility: visible; }
+.svit .detail-slunce { color: #A86A00; }
+.svit .slunce-kruh { background: #FFF0C7; color: #E39A00; }
+.svit .slunce-kruh svg { fill: currentColor; }
+.detail-cislo {
+  margin-top: 12px;
+  font-size: 21px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .08em;
+  overflow-wrap: anywhere;
+  -webkit-user-select: text;
+  user-select: text;
+}
+/* kód u horního okraje (třeba Albert): blok s kódem je v app.js přesunutý před hlavičku, hned pod stavovým řádkem telefonu.
+   Uvnitř jde kód, číslo a pod nimi sluníčko. Šířka jako v těle (kód má sirkaObsahu() - 32), zakulacené jen spodní rohy. */
+.kod-nahore { background: var(--b); }
+.detail.kod-nahore .vrstva-telo { background: var(--pozadi); }
+.kod-nahore > .vrstva-hlava { padding-top: 6px; }
+.kod-nahore > .detail-kod {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  margin: 0 max(16px, calc(50% - 304px));
+  padding: calc(8px + env(safe-area-inset-top)) 16px 12px;
+  border-radius: 0 0 18px 18px;
+}
+.kod-nahore .detail-cislo { order: 2; }
+.kod-nahore .detail-slunce { order: 3; margin: 8px 0 0; }
+.detail-appka {
+  padding: 16px;
+  border-radius: 18px;
+  background: #FFFFFF;
+  box-shadow: var(--stin);
+}
+.detail-appka .info { margin-top: 10px; text-align: center; }
+.poznamka {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--plocha);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.akce {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.akce .tlacitko { padding: 10px 12px; }
+.akce .cela { grid-column: 1 / -1; }
+
+/* účet u karty: jméno a heslo k nahlédnutí (heslo se ukáže až po odemknutí telefonu) */
+.ucet .sekce { margin-top: 0; }
+.ucet-radky { border-radius: 14px; overflow: hidden; box-shadow: var(--stin); }
+.ucet-radek {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 14px;
+  background: var(--plocha);
+}
+.ucet-radek + .ucet-radek { border-top: 1px solid var(--linka); }
+.ucet-popisek { flex: none; width: 52px; color: var(--tlumeny); font-size: 13px; font-weight: 600; }
+.ucet-hodnota { flex: 1; min-width: 0; overflow-wrap: anywhere; -webkit-user-select: text; user-select: text; }
+.ucet-hodnota.heslo { letter-spacing: .08em; }
+.ucet-hodnota.heslo.odkryte { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 15px; letter-spacing: 0; }
+.ucet-odpocet { flex: 1; color: var(--tlumeny); font-size: 14px; }
+.ucet-radek .odkaz { flex: none; padding: 10px 6px; }
+.ucet-radek .odkaz:disabled { opacity: .45; }
+.ucet-prihlasit { margin-top: 10px; }
+/* další číslo na kartě (třeba horní číslo ISIC) pod kódem */
+.dalsi-cislo .ucet-hodnota { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 15px; }
+
+.zprava { font-size: 15px; }
+.zprava:empty, .chyba:empty { display: none; }
+.chyba { color: var(--chyba); font-size: 15px; font-weight: 600; }
+.info { color: var(--tlumeny); font-size: 14px; }
+
+/* ---------- výběr obchodu ---------- */
+
+.hledat {
+  position: sticky;
+  top: -16px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: -16px;
+  padding: 16px 12px 6px;
+  background: var(--pozadi);
+  color: var(--tlumeny);
+}
+.hledat::before {
+  content: "";
+  position: absolute;
+  inset: 16px 0 6px;
+  border-radius: 12px;
+  background: var(--plocha);
+  z-index: -1;
+}
+.hledat input {
+  flex: 1;
+  min-width: 0;
+  height: 50px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.hledat + .retezce { margin-top: 8px; }
+/* šířky podle textu, ať se „Nejrozšířenější“ vejde i na úzký telefon */
+.prepinac.razeni { grid-auto-columns: auto; margin-top: 4px; }
+.razeni-zprava { margin: 10px 2px 0; }
+.skryt-moje { margin-top: 6px; align-items: center; }
+.razeni ~ .retezce { margin-top: 12px; }
+.hledat input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+.retezce > .skupina + .skupina { margin-top: 18px; }
+.retezce > .skupina:first-child { margin-top: 4px; }
+.skupina h3, .sekce {
+  margin: 0 4px 8px;
+  color: var(--tlumeny);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.sekce { margin-top: 24px; }
+.vrstva-telo > .sekce:first-child { margin-top: 4px; }
+
+.retezec, .volba {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 58px;
+  padding: 9px 14px;
+  background: var(--plocha);
+  text-align: left;
+}
+.retezec + .retezec, .volba + .volba { border-top: 1px solid var(--linka); }
+.retezec:active, .volba:active { background: #EEF0F3; }
+.skupina { border-radius: 14px; }
+.skupina .retezec:first-of-type { border-radius: 14px 14px 0 0; }
+.skupina .retezec:last-of-type { border-radius: 0 0 14px 14px; }
+.skupina .retezec:first-of-type:last-of-type { border-radius: 14px; }
+
+.mini {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 27px;
+  border-radius: 6px;
+  background: var(--b);
+  color: var(--t);
+  font-size: 14px;
+  font-weight: 700;
+  flex: none;
+}
+.mini .ik { width: 16px; height: 16px; }
+.retezec-nazev { flex: 1; min-width: 0; font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.retezec-pocet { color: var(--tlumeny); font-size: 13px; flex: none; }
+
+/* ---------- karty z jiné appky ---------- */
+
+/* .hledat má margin-top: -16px a neprůhledné pozadí, řádek nad ním by jinak překryl */
+.pred-hledanim { margin-bottom: 16px; }
+.prazdno-odkaz { display: block; margin: 18px auto 0; padding: 8px 12px; text-align: center; font-size: 15px; }
+.import-seznam { border-radius: 14px; overflow: hidden; background: var(--plocha); box-shadow: var(--stin); }
+.import-radek { display: flex; align-items: center; gap: 12px; padding: 10px 4px 10px 12px; }
+.import-radek + .import-radek { border-top: 1px solid var(--linka); }
+.import-foto { flex: none; width: 46px; height: 68px; border-radius: 8px; overflow: hidden; background: var(--sede); }
+.import-foto img, .import-velka { display: block; width: 100%; }
+.import-foto img { height: 100%; object-fit: cover; }
+.import-velka { border-radius: 14px; }
+.import-text { flex: 1; min-width: 0; }
+.import-text input {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #DADDE3;
+  border-radius: 10px;
+  background: var(--plocha);
+  font-size: 16px;
+  outline: none;
+}
+.import-text input:focus { border-color: var(--text); }
+.import-navrhy { margin-top: 4px; border-radius: 10px; overflow: hidden; background: var(--pozadi); }
+.import-navrh { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 6px 10px; text-align: left; font-size: 15px; }
+.import-navrh + .import-navrh { border-top: 1px solid var(--linka); }
+.import-navrh:active { background: var(--sede); }
+.import-navrh > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.import-navrh .logo.male, .import-navrh .mini.male { width: 24px; height: 24px; font-size: 12px; border-radius: 6px; }
+.import-cislo { display: flex; align-items: center; gap: 8px; margin-top: 6px; color: var(--tlumeny); font-size: 13px; }
+.import-cislo > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.import-cislo input { flex: 1; min-width: 0; min-height: 36px; padding: 6px 10px; }
+.import-znacka { display: flex; flex: none; }
+.import-znacka .logo.male, .import-znacka .mini.male { width: 24px; height: 24px; font-size: 12px; border-radius: 6px; }
+.import-pryc { color: var(--tlumeny); }
+.tlacitko:disabled { opacity: .45; cursor: default; }
+
+/* ---------- jak přidat kartu + formulář ---------- */
+
+.nahled { display: flex; justify-content: center; }
+.nahled .karta { max-width: 236px; }
+.volby { display: grid; gap: 10px; }
+
+.nahled-kod {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #FFFFFF;
+  box-shadow: var(--stin);
+}
+
+.pole { display: block; }
+.popisek {
+  display: block;
+  margin: 0 2px 6px;
+  color: var(--tlumeny);
+  font-size: 13px;
+  font-weight: 600;
+}
+.pole input, .pole select, .pole textarea {
+  display: block;
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 14px;
+  border: 1px solid #DADDE3;
+  border-radius: 12px;
+  background: var(--plocha);
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+}
+.pole textarea { resize: none; line-height: 1.4; }
+.pole select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23616875' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+}
+.pole input:focus, .pole select:focus, .pole textarea:focus { border-color: var(--text); }
+.pod-polem { display: block; margin: 8px 2px 0; color: var(--tlumeny); font-size: 14px; }
+.heslo-obal { position: relative; }
+.pole .heslo-obal input { padding-right: 52px; }
+.oko {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  color: var(--tlumeny);
+}
+.oko .ik { width: 22px; height: 22px; }
+
+/* zaškrtávátko s popiskem pod ním (třeba Kód u horního okraje obrazovky), celý řádek je klepací plocha */
+.zaskrtnuti {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 44px;
+  padding: 6px 2px;
+}
+.zaskrtnuti input {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--akcent);
+}
+.zaskrtnuti-text { display: block; min-width: 0; }
+.zaskrtnuti-nazev { display: block; font-size: 16px; }
+.zaskrtnuti-popis { display: block; margin-top: 2px; color: var(--tlumeny); font-size: 14px; }
+
+.vzorky { display: flex; flex-wrap: wrap; gap: 12px; padding: 4px 2px; }
+.vzorek {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--b);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08);
+}
+.vzorek[aria-checked="true"] { box-shadow: 0 0 0 3px var(--pozadi), 0 0 0 5px var(--text); }
+
+/* ---------- nastavení ---------- */
+
+.seznam-voleb { border-radius: 14px; overflow: hidden; }
+.vrstva-telo > .seznam-voleb { margin-top: 0; }
+.volba-nazev { flex: 1; min-width: 0; font-size: 16px; }
+.hodnota { color: var(--tlumeny); font-size: 14px; text-align: right; }
+.volba > .ik { color: #9AA0AA; }
+.o-appce { margin: 0 4px; color: var(--tlumeny); font-size: 13px; }
+.seznam-voleb + .o-appce { margin-top: 20px; }
+.o-appce + .o-appce { margin-top: 4px; }
+
+/* řádky s barevnou dlaždicí; čára mezi nimi začíná až za dlaždicí (14 + 34 + 12 px) */
+.ikonka {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--d);
+  color: #FFFFFF;
+}
+.ikonka .ik { width: 19px; height: 19px; }
+.nastaveni .seznam-voleb > * { position: relative; }
+.nastaveni .seznam-voleb > * + * { border-top: 0; }
+.nastaveni .seznam-voleb > * + *::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 60px;
+  right: 0;
+  border-top: 1px solid var(--linka);
+}
+.polozka-text { display: grid; flex: 1; min-width: 0; gap: 1px; }
+.polozka-popis { color: var(--tlumeny); font-size: 13px; line-height: 1.3; }
+.polozka .hodnota { flex: none; max-width: 42%; }
+.hodnota.ok { color: #3D8A1E; }
+.hodnota.chce { color: var(--odkaz); font-weight: 600; }
+
+/* přepínač: popisy všech možností leží přes sebe, takže výška řádku se po klepnutí nemění */
+.volba.nastav { display: block; padding: 12px 14px 13px; }
+.volba.nastav:active { background: var(--plocha); }
+.nastav-hlava { display: flex; align-items: center; gap: 12px; }
+.prepinac {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  gap: 2px;
+  margin-top: 12px;
+  padding: 3px;
+  border-radius: 11px;
+  background: #EEF0F3;
+}
+.prepinac button {
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 4px;
+  border-radius: 9px;
+  color: var(--tlumeny);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.prepinac button[aria-checked="true"] { background: #FFFFFF; color: var(--text); box-shadow: 0 1px 3px rgba(0, 0, 0, .14); }
+.popisy { display: grid; margin-top: 10px; }
+.popisy > p {
+  grid-area: 1 / 1;
+  margin: 0 2px;
+  color: var(--tlumeny);
+  font-size: 13.5px;
+  line-height: 1.4;
+  visibility: hidden;
+}
+.popisy > p.vybrany { visibility: visible; }
+/* vlastní počet sekund jasu: políčko přímo v textu popisu */
+.jas-sekundy {
+  width: 3.6em;
+  height: 30px;
+  margin: 0 2px;
+  padding: 0 4px;
+  border: 1px solid #DADDE3;
+  border-radius: 8px;
+  background: var(--plocha);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  outline: none;
+}
+.jas-sekundy:focus { border-color: var(--text); }
+
+/* vlastní pořadí: tahá se za úchyt vpravo, zbytek řádku posouvá seznam */
+.rada {
+  position: relative;
+  border-radius: 14px;
+  background: var(--plocha);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.rada > .tah { position: relative; }
+.rada > .tah:first-child { border-radius: 14px 14px 0 0; }
+.rada > .tah:last-child { border-radius: 0 0 14px 14px; }
+.rada > .tah:first-child:last-child { border-radius: 14px; }
+.tah:active { background: var(--plocha); }
+.uchop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex: none;
+  width: 56px;
+  margin: -9px -14px -9px 0;
+  color: #9AA0AA;
+  touch-action: none;
+  cursor: grab;
+}
+.tah.tazena {
+  z-index: 2;
+  border-top-color: transparent;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .18), 0 2px 6px rgba(0, 0, 0, .08);
+}
+.tazena .uchop { color: var(--text); cursor: grabbing; }
+
+/* ---------- potvrzení ---------- */
+
+.dialog-pozadi {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(17, 19, 24, .45);
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.dialog-pozadi.otevrena { opacity: 1; }
+.dialog {
+  width: 100%;
+  max-width: 360px;
+  padding: 22px 18px 18px;
+  border-radius: 20px;
+  background: var(--plocha);
+  box-shadow: 0 12px 40px rgba(17, 19, 24, .25);
+  transform: scale(.96);
+  transition: transform .2s ease;
+}
+.dialog-pozadi.otevrena .dialog { transform: none; }
+.dialog p { margin: 0 4px 20px; font-size: 17px; font-weight: 600; }
+.dialog-tlacitka { display: flex; gap: 10px; }
+.dialog-tlacitka .tlacitko { flex: 1; }
+.dialog .tlacitko.nebezpeci { background: var(--chyba); color: #FFFFFF; }
+.dialog p:has(+ .dialog-popis) { margin-bottom: 8px; }
+.dialog .dialog-popis { margin-bottom: 16px; color: var(--tlumeny); font-size: 14px; font-weight: 400; line-height: 1.4; }
+.dialog .chyba { margin: 8px 4px 0; font-size: 15px; }
+.dialog .pole + .pole { margin-top: 12px; }
+.dialog-hesla .dialog-tlacitka { margin-top: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vrstva, .dialog-pozadi, .dialog { transition-duration: 1ms; }
+}
+
+/* ---------- historie ukázání ---------- */
+
+.zaznam { min-height: 48px; }
+.prepinac.obdobi { margin-top: 0; }
+.dalsi-zaznamy { display: flex; gap: 10px; }
+.dalsi-zaznamy .tlacitko { flex: 1; }
+.zaznam-cas { width: 44px; color: var(--tlumeny); font-size: 14px; font-variant-numeric: tabular-nums; flex: none; }
+.nacteno-cislo { margin-top: 8px; text-align: center; font-size: 17px; font-variant-numeric: tabular-nums; letter-spacing: .06em; overflow-wrap: anywhere; }
+
+/* ---------- nová verze: tenký pruh dole, jednou za každou novější verzi, sám zmizí ---------- */
+
+.nova-verze {
+  position: fixed;
+  left: max(12px, calc(50% - 300px));
+  right: max(12px, calc(50% - 300px));
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 2px 2px 16px;
+  border-radius: 12px;
+  background: var(--text);
+  color: #FFFFFF;
+  font-size: 15px;
+  box-shadow: 0 6px 20px rgba(17, 19, 24, .25);
+  transform: translateY(calc(100% + 24px));
+  transition: transform .25s cubic-bezier(.2, .8, .2, 1);
+}
+.nova-verze.ukazany { transform: none; }
+.nova-verze span { flex: 1; min-width: 0; }
+.nova-verze-stahnout { padding: 10px 8px; font-weight: 600; color: #F59AC4; }
+.nova-verze-stahnout:active { opacity: .6; }
+.nova-verze .ikona { width: 40px; height: 40px; color: #B9BEC7; }
+.nova-verze .ikona .ik { width: 20px; height: 20px; }
+.nova-verze .ikona:active { background: rgba(255, 255, 255, .12); }
+/* krátká zpráva dole: nad vrstvou i dialogem, klepnutí propustí */
+.nova-verze.oznam { z-index: 30; padding: 13px 16px; pointer-events: none; }
+
+/* nová verze ke stažení: tečka u Nastavení, okno Aktualizace */
+#btnNastaveni { position: relative; }
+#btnNastaveni.novinka::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--akcent);
+  box-shadow: 0 0 0 2px var(--pozadi);
+}
+.akt-stav { display: flex; flex-direction: column; gap: 2px; margin: 4px 4px 0; }
+.akt-stav b { font-size: 20px; font-weight: 700; }
+.akt-stav span { color: var(--tlumeny); font-size: 14px; }
+.akt-tlacitko { width: 100%; margin-top: 16px; }
+.akt-tlacitko:disabled { opacity: .55; }
+.akt-tlacitko + .zprava { margin: 10px 4px 0; }
+.akt-zmeny .sekce { margin-top: 28px; }
+.akt-verze { margin: 10px 0 0; padding: 14px 16px; border-radius: 14px; background: var(--plocha); box-shadow: var(--stin); }
+.akt-datum { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; }
+.akt-stitek { padding: 1px 8px; border-radius: 99px; background: var(--akcent); color: #FFFFFF; font-size: 12px; font-weight: 600; }
+.akt-stitek.tato { background: var(--sede); color: var(--tlumeny); }
+.akt-verze ul { margin: 6px 0 0; padding: 0 0 0 1.1em; color: var(--tlumeny); font-size: 15px; line-height: 1.4; }
+.akt-verze li + li { margin-top: 4px; }
+.akt-verze li::marker { color: var(--akcent); }
+
+/* podnět: na nízkém displeji s klávesnicí se dialog posouvá */
+.dialog-podnet { max-height: 100%; overflow-y: auto; }
+.dialog-podnet .prepinac { margin: 0 0 14px; }
+.dialog-podnet .dialog-tlacitka { margin-top: 16px; }
+.podnet-vypnout { margin-top: 14px; text-align: center; font-size: 14px; }
+
+/* ---------- mapa okolí (app.js: Mapa, otevriMapu) ---------- */
+.mapa-vrstva .vrstva-telo { position: relative; padding: 0; overflow: hidden; }
+.mapa-vrstva .vrstva-telo > * + * { margin-top: 0; }
+.mapa-okoli {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #F2EFE9;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: grab;
+}
+.mapa-okoli.tahne { cursor: grabbing; }
+.m-dlazdice, .m-vrstva, .m-znacky { position: absolute; inset: 0; pointer-events: none; }
+.m-vrstva img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 256px;
+  height: 256px;
+  transform-origin: 0 0;
+  opacity: 0;
+  transition: opacity .2s;
+}
+.m-vrstva img.ok { opacity: 1; }
+.m-vrstva img.chyba { visibility: hidden; }
+.m-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.m-kruh { fill: none; stroke: #E75294; stroke-width: 1.5; stroke-dasharray: 6 5; }
+.m-kruh-popis {
+  fill: #B8296A;
+  font: 700 12px/1 system-ui, sans-serif;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: #FFFFFF;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.m-presnost { fill: rgba(26, 115, 232, .12); stroke: rgba(26, 115, 232, .35); stroke-width: 1; }
+.m-ja { fill: #1A73E8; stroke: #FFFFFF; stroke-width: 3; }
+.m-obchod {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--b);
+  color: var(--t);
+  box-shadow: 0 0 0 1px rgba(17, 19, 24, .16), 0 2px 6px rgba(17, 19, 24, .35);
+  font-size: 15px;
+  will-change: transform;
+}
+/* Logo v mapě vyplní celou dlaždici jako ikona appky (podklad a zvětšení z znacky.json "dlazdice"). */
+.m-logo { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
+.m-logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.m-obchod i {
+  position: absolute;
+  right: -7px;
+  top: -7px;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 4px;
+  border-radius: 10px;
+  background: #1B1E24;
+  color: #FFFFFF;
+  font: 700 11px/19px system-ui, sans-serif;
+  text-align: center;
+}
+.m-stitek {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: 70%;
+  padding: 0 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 0 3px #FFFFFF, 0 0 3px #FFFFFF, 0 0 2px #FFFFFF, 0 0 1px #FFFFFF;
+  pointer-events: none;
+  will-change: transform;
+}
+.m-na-me {
+  position: absolute;
+  right: 14px;
+  bottom: calc(30px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  color: #1A73E8;
+  box-shadow: 0 2px 8px rgba(17, 19, 24, .25);
+}
+.m-na-me .ik { width: 22px; height: 22px; }
+.m-na-me:active { background: #EEF0F3; }
+.m-osm {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 2px 6px calc(2px + env(safe-area-inset-bottom));
+  border-top-right-radius: 6px;
+  background: rgba(255, 255, 255, .8);
+  color: #4A4F57;
+  font-size: 11px;
+  pointer-events: none;
+}
+.m-vyber {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: calc(92px + env(safe-area-inset-bottom));
+  max-width: 620px;
+  max-height: 50%;
+  margin: 0 auto;
+  padding: 10px;
+  overflow-y: auto;
+  border-radius: 16px;
+  background: var(--pozadi);
+  box-shadow: 0 4px 20px rgba(17, 19, 24, .25);
+}
+.m-vyber-nadpis { margin: 2px 4px 8px; color: var(--tlumeny); font-size: 14px; }
+
+/* prodejny karty dole v detailu: sbalené, malá mapa se načte až po rozbalení a nejde posouvat (klepnutí = celá mapa) */
+.prodejny { border-radius: 14px; overflow: hidden; background: var(--plocha); box-shadow: var(--stin); }
+.prodejny summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 8px 14px;
+  list-style: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.prodejny summary::-webkit-details-marker { display: none; }
+.prodejny summary:active { opacity: .6; }
+.prodejny summary .ik { color: var(--tlumeny); flex: none; }
+.prodejny-nadpis { flex: 1; min-width: 0; font-weight: 600; }
+.prodejny-kolik { color: var(--tlumeny); font-size: 14px; white-space: nowrap; }
+.prodejny-mapa { position: relative; height: 190px; }
+.prodejny-klep {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(to top, rgba(17, 19, 24, .45), rgba(17, 19, 24, 0) 56px);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.prodejny-klep:active { background-color: rgba(17, 19, 24, .08); }
+.prodejny-cela {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .6);
+}
+.prodejny-cela .ik { width: 18px; height: 18px; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .6)); }
+
+/* ---------- zamčená obrazovka: jen karty a kódy (body.zamceno nastavuje app.js: zamek) ---------- */
+
+body.zamceno #btnPridat, body.zamceno #btnNastaveni, body.zamceno .jen-odemcene { display: none !important; }
+.pruh-zamku {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--plocha);
+  box-shadow: var(--stin);
+  text-align: left;
+  font-size: 14px;
+  color: var(--tlumeny);
+}
+.pruh-zamku .ik { color: var(--text); }
+.pruh-zamku > :first-child { flex: none; }
+.pruh-zamku > :last-child { flex: 1; text-align: left; }
+.pruh-zamku b { color: var(--odkaz); font-weight: 600; }
+
+/* ---------- Nastavení: méně používané volby sbalené ---------- */
+
+.dalsi-volby { margin: 18px 0 14px; }
+.dalsi-volby > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--plocha);
+  box-shadow: var(--stin);
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+.dalsi-volby > summary::-webkit-details-marker { display: none; }
+.dalsi-volby > summary .ik { color: var(--tlumeny); transition: transform .2s; }
+.dalsi-volby[open] > summary .ik { transform: rotate(90deg); }
+.dalsi-volby > summary small { display: block; font-weight: 400; font-size: 13px; color: var(--tlumeny); }
+
+/* ---------- hesla ze správce hesel ---------- */
+
+.hesla-seznam { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+.hesla-radek {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--plocha);
+  box-shadow: var(--stin);
+}
+.hesla-radek input { width: 22px; height: 22px; flex: none; accent-color: var(--akcent); }
+.hesla-radek span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.hesla-radek small { display: block; color: var(--tlumeny); font-size: 13px; }
+
+/* ---------- tmavý režim (html.tma zapíná app.js: nastavVzhled, večer podle západu slunce) ---------- */
+
+html.tma {
+  --pozadi: #14161A;
+  --plocha: #1F2228;
+  --text: #ECEEF1;
+  --tlumeny: #A2A8B3;
+  --linka: #30343C;
+  --sede: #2A2E36;
+  --odkaz: #F28BB9;
+  --zelena: #7CC653;
+  --chyba: #F0788C;
+  --chyba-svetla: #3A1F26;
+  --stin: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 14px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+/* Kód pro pokladnu zůstává černý na bílé (čtečka tmavý kód nenačte), mapa má světlé dlaždice: uvnitř platí světlé barvy. */
+html.tma .logo, html.tma .hero-kod, html.tma .hero-cislo, html.tma .hero-appka, html.tma .detail-kod,
+html.tma .detail-appka, html.tma .nahled-kod, html.tma .mapa-okoli {
+  --pozadi: #F4F5F7;
+  --plocha: #FFFFFF;
+  --text: #1B1E24;
+  --tlumeny: #616875;
+  --linka: #E3E6EA;
+  --sede: #E6E8EC;
+  --odkaz: #B8296A;
+  color: var(--text);
+  color-scheme: light;
+}
+html.tma .tlacitko.hlavni, html.tma .nova-verze { color: #14161A; }
+html.tma .detail-appka .tlacitko.hlavni { color: #FFFFFF; }
+html.tma .nova-verze-stahnout { color: #B8296A; }
+html.tma .nova-verze .ikona { color: #616875; }
+html.tma .ikona:active, html.tma .prodejny-klep:active { background-color: rgba(255, 255, 255, .1); }
+html.tma .retezec:active, html.tma .volba:active { background: #2A2E36; }
+html.tma .pole input, html.tma .pole select, html.tma .pole textarea, html.tma .import-text input,
+html.tma .jas-sekundy { border-color: #3A3F48; }
+html.tma .prepinac { background: #14161A; }
+html.tma .prepinac button[aria-checked="true"] { background: #3A3F48; box-shadow: none; }
+html.tma .hodnota.ok { color: #7CC653; }
+html.tma .volba > .ik, html.tma .uchop { color: #6F7682; }
+html.tma .dialog-pozadi { background: rgba(0, 0, 0, .6); }

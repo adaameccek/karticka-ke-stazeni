@@ -1,0 +1,502 @@
+{
+  "_popis": "Tlačítko Body a kupóny v detailu karty. Klíč = id řetězce z retezce.json, nebo název karty bez diakritiky a mezer (flyingblue, notino). app = balíček na Google Play (každý musí být i v AndroidManifest.xml v <queries>, hlídá to build.py), web = stránka programu, když appka v telefonu není. jenAppka = kód pro pokladnu ukazuje appka obchodu a mění se: při přidání je u toho upozornění a odkaz do appky, kód jde naskenovat nebo opsat jako u ostatních karet, nebo přidat kartu bez čísla, která appku jen otevře. format = výchozí typ kódu, když se opisuje (McDonald's QR, Adam 22.10.2026). odkaz = adresa, kterou appka obchodu otevře rovnou obrazovku s kódem (McDonald's: Odměny s QR a textovým kódem, ověřeno v S25 22.10.2026, appka 3.51.0, i ze zavřené appky); nejde-li otevřít, otevře se úvodní obrazovka appky. Ověřeno 20.10.2026, humanic, pilulka, losteria, bambule, sparkys, sportvision, premierecinemas, mcdonalds, bageterie, costa, douglas, lindex, tchibo, mol a cinemacity 21.10.2026. Statický kód (lze uložit do Kartičky) potvrzen i u Fruitisimo (QR = číslo karty, z kódu appky 21.10.2026); dm má v appce měnící se QR, ale plastová karta a její EAN fungují.",
+  "albert": {
+    "app": "cz.albert.app",
+    "web": "https://www.albert.cz/aplikace",
+    "program": "Můj Albert"
+  },
+  "billa": {
+    "app": "at.billa.international.czech",
+    "web": "https://www.billa.cz/prihlaseni",
+    "program": "BILLA klub"
+  },
+  "kaufland": {
+    "app": "com.kaufland.Kaufland",
+    "web": "https://prodejny.kaufland.cz/xtra.html",
+    "program": "Kaufland Card XTRA"
+  },
+  "tesco": {
+    "app": "cz.tesco.clubcard",
+    "web": "https://www.itesco.cz/clubcard",
+    "program": "Clubcard"
+  },
+  "lidl": {
+    "app": "com.lidl.eci.lidlplus",
+    "web": "https://www.lidl.cz/c/lidl-plus/s10008885",
+    "program": "Lidl Plus"
+  },
+  "penny": {
+    "app": "cz.penny.app",
+    "web": "https://www.penny.cz/moje-penny",
+    "program": "Moje PENNY"
+  },
+  "globus": {
+    "app": "com.pragonauts.globus",
+    "web": "https://www.globus.cz/vernostni-program",
+    "program": "Můj Globus"
+  },
+  "dm": {
+    "app": "de.dm.meindm.android",
+    "web": "https://www.dm.cz/services/zakaznicky-program-servis/activebeauty",
+    "program": "Moje dm"
+  },
+  "rossmann": {
+    "app": "cz.etnetera.mobile.rossmann",
+    "web": "https://www.rossmann.cz/prihlaseni",
+    "program": "ROSSMANN CLUB"
+  },
+  "teta": {
+    "app": "cz.anywhere.tetadrugstore",
+    "web": "https://www.tetadrogerie.cz/klub/prihlaseni",
+    "program": "Teta klub"
+  },
+  "benu": {
+    "app": "cz.benu.lekarna",
+    "web": "https://www.benu.cz/prihlaseni-k-benu-plus-karte",
+    "program": "BENU PLUS"
+  },
+  "drmax": {
+    "app": "eu.drmax.mobile",
+    "web": "https://www.drmax.cz/kartavyhod/nabidky-a-kupony",
+    "program": "Karta výhod Dr. Max"
+  },
+  "ambiente": {
+    "web": "https://moje.ambi.cz/",
+    "program": "Věrnostní program Ambiente"
+  },
+  "paul": {
+    "web": "https://www.paul-cz.com/merci-club/",
+    "program": "PAUL Merci Club"
+  },
+  "ugo": {
+    "web": "https://www.ugo.cz/cs/ugo-fanda",
+    "program": "UGO Fanda"
+  },
+  "fruitisimo": {
+    "app": "com.fruitisimo.app",
+    "web": "https://fruitisimo.cz/klub/",
+    "program": "Klub Fruitisimo"
+  },
+  "ovocnysvetozor": {
+    "web": "https://www.ovocnysvetozor.cz/vernostni-program",
+    "program": "Věrnostní program"
+  },
+  "ikea": {
+    "app": "com.ingka.ikea.app",
+    "web": "https://www.ikea.com/cz/cs/profile/login/",
+    "program": "IKEA Family"
+  },
+  "hm": {
+    "app": "com.hm.goe",
+    "web": "https://www2.hm.com/cs_cz/login",
+    "program": "H&M Member"
+  },
+  "flyingblue": {
+    "app": "com.afklm.mobile.android.gomobile.klm",
+    "web": "https://www.flyingblue.com/en/",
+    "program": "Flying Blue"
+  },
+  "starbucks": {
+    "app": "com.starbucks.cz",
+    "web": "https://www.starbucks.cz/cz/account/login",
+    "program": "Starbucks Rewards"
+  },
+  "saunia": {
+    "app": "air.cz.saunia.saunia",
+    "web": "https://ucet.saunia.cz/cz/uzivatel",
+    "program": "Saunia",
+    "jenAppka": true,
+    "tlacitko": "Vstup v appce Saunia",
+    "kodText": "Kód pro recepci ukáže appka Saunia u pobočky pod tlačítkem VSTUP TEĎ.",
+    "rada": "Vstup kódem z appky: vyber pobočku, VSTUP TEĎ a kód nahlas na recepci. Kredit se hlídá v appce."
+  },
+  "mcdonalds": {
+    "app": "com.mcdonalds.mobileapp",
+    "web": "https://www.mcdonalds.cz/kupony-v-aplikaci/",
+    "program": "McDonald's Rewards",
+    "jenAppka": true,
+    "format": "QR_CODE",
+    "odkaz": "gmalite://gmalite-loyalty"
+  },
+  "cinestar": {
+    "app": "cz.cinestar.app",
+    "web": "https://cinestar.cz/cinestar-club",
+    "program": "CineStar Club"
+  },
+  "sephora": {
+    "app": "fr.sephora.sephorafrance",
+    "web": "https://www.sephora.cz/Sephora-Unlimited.html",
+    "program": "Sephora Unlimited"
+  },
+  "marksspencer": {
+    "app": "cz.marksandspencer.app",
+    "web": "https://marksandspencerstore.cz/cs/content/17-ms-klub",
+    "program": "M&S Klub"
+  },
+  "intersport": {
+    "app": "com.intersport.app.at",
+    "web": "https://www.intersport.cz/login/",
+    "program": "INTERSPORT Club"
+  },
+  "cremedelacreme": {
+    "app": "com.cremedelacreme.app",
+    "web": "https://www.cremedelacreme.cz/cs/klubovna",
+    "program": "Zmrzlinová klubovna"
+  },
+  "peekcloppenburg": {
+    "web": "https://www.peek-cloppenburg.cz/cs/myaccount/login",
+    "program": "P&C účet"
+  },
+  "mcpen": {
+    "web": "https://mcpen.cz/zakaznicky-servis/vernostni-program/",
+    "program": "Věrnostní program"
+  },
+  "mercuria": {
+    "web": "https://mercurialaser.cz/blog/clenstvi-v-mercurii/",
+    "program": "Členství v Mercurii"
+  },
+  "decathlon": {
+    "app": "com.decathlon.app",
+    "web": "https://www.decathlon.cz/lp/i/vernostni-program",
+    "program": "Věrnostní program"
+  },
+  "notino": {
+    "app": "com.pragonauts.notino",
+    "web": "https://www.notino.cz/notino-club/",
+    "program": "Notino Club"
+  },
+  "datart": {
+    "app": "com.datart.production",
+    "web": "https://www.datart.cz/mobilni-aplikace",
+    "program": "DATART"
+  },
+  "shell": {
+    "app": "com.shell.sitibv.retail",
+    "web": "https://www.shell.cz/clubsmart.html",
+    "program": "Shell ClubSmart"
+  },
+  "omv": {
+    "app": "com.comarch.clm.mobileapp.omvcz",
+    "web": "https://www.omv.cz/cs/mystation",
+    "program": "MyStation"
+  },
+  "orlen": {
+    "app": "cz.benzina.aplikace",
+    "web": "https://www.orlen.cz/orlen-app",
+    "program": "ORLEN aplikace"
+  },
+  "humanic": {
+    "app": "com.humanic.shoes",
+    "web": "https://www.humanic.net/cz/club",
+    "program": "Humanic Club"
+  },
+  "pilulka": {
+    "app": "cz.pilulka.shop",
+    "web": "https://www.pilulka.cz/karticka-pilulka",
+    "program": "Kartička Pilulka"
+  },
+  "losteria": {
+    "app": "at.helloagain.losteria",
+    "web": "https://losteria.net/cz/zpravy/amici-club/",
+    "program": "Amici Club"
+  },
+  "bambule": {
+    "app": "io.trifft.wormelen",
+    "web": "https://www.bambule.cz/coolclub/",
+    "program": "Klub Bambule"
+  },
+  "sparkys": {
+    "web": "https://www.sparkysklub.cz/",
+    "program": "Sparkys klub"
+  },
+  "sportvision": {
+    "web": "https://www.sportvision.cz/sport-bonus-program",
+    "program": "Sport Bonus"
+  },
+  "premierecinemas": {
+    "web": "https://www.premierecinemas.cz/premiere-card/",
+    "program": "Premiere Card"
+  },
+  "bageterie": {
+    "app": "cz.bbdomu.app",
+    "web": "https://www.bb.cz/vernostni-program-faqs",
+    "program": "Věrnostní program BB"
+  },
+  "costa": {
+    "web": "https://www.costa-coffee.cz/podminky-clenstvi/",
+    "program": "Costa Coffee Club"
+  },
+  "douglas": {
+    "app": "com.douglas.main",
+    "web": "https://www.douglas.cz/cs/cp/dbc/dbc",
+    "program": "Douglas Beauty Card"
+  },
+  "lindex": {
+    "app": "com.lindex.customerapp",
+    "web": "https://support-cz.lindex.com/hc/cs/articles/360005561678-Smluvn%C3%AD-podm%C3%ADnky-programu-More-at-Lindex",
+    "program": "More at Lindex"
+  },
+  "tchibo": {
+    "app": "de.tchibo.app",
+    "web": "https://www.tchibo.cz/c/sluzby-aplikace",
+    "program": "TchiboCard"
+  },
+  "mol": {
+    "app": "hu.mol.move",
+    "web": "https://www.molmove.cz/",
+    "program": "MOL Move"
+  },
+  "cinemacity": {
+    "app": "pl.cineworld.cinemacity",
+    "web": "https://www.cinemacity.cz/e-club",
+    "program": "Cinema City Club"
+  },
+  "tamda": {
+    "web": "https://tamdagroup.eu/cs/tamda-foods/become-member",
+    "program": "Zákaznická kartička Tamda Foods"
+  },
+  "sklizeno": {
+    "web": "https://eshop.sklizeno.cz/vernostni-program",
+    "program": "Věrnostní program Sklizeno"
+  },
+  "tempo": {
+    "app": "com.loyalty.app.tempo",
+    "web": "https://www.odtempo.cz/",
+    "program": "Věrnostní program supermarketů TEMPO"
+  },
+  "oxalis": {
+    "web": "https://www.oxalis.cz/oxalis-bonus-club/",
+    "program": "Oxalis Bonus Club"
+  },
+  "manufaktura": {
+    "web": "https://www.manufaktura.cz/klub-manufaktura",
+    "program": "Klub MANUFAKTURA"
+  },
+  "fann": {
+    "web": "https://www.fann.cz/",
+    "program": "Členství FAnn"
+  },
+  "rituals": {
+    "app": "cz.rituals.app.twa",
+    "web": "https://www.rituals.com/cs-cz/membership",
+    "program": "Rituals Membership"
+  },
+  "magistra": {
+    "app": "cz.magistra.twa",
+    "web": "https://www.magistra.cz/",
+    "program": "Magistra Plus"
+  },
+  "pharmapoint": {
+    "web": "https://www.pharmapoint.cz/vernostni-program/",
+    "program": "Věrnostní program PharmaPoint"
+  },
+  "doctoroptic": {
+    "web": "https://doctoroptic.cz/sluzby/vernostni-programy/",
+    "program": "Věrnostní programy Doctor Optic"
+  },
+  "formfactory": {
+    "app": "pl.ez.formFactory",
+    "web": "https://www.formfactory.cz/",
+    "program": "Členství Form Factory"
+  },
+  "maxfitness": {
+    "app": "com.datlink.mymaxfitness",
+    "web": "https://www.maxfitness.cz/",
+    "program": "Členství Max Fitness"
+  },
+  "isic": {
+    "app": "com.bootiq2.gtsisic",
+    "web": "https://www.isic.cz/aplikace",
+    "program": "Průkaz ISIC",
+    "tlacitko": "Legitimace v ALIVE",
+    "rada": "Ve školní knihovně a na studijním ukaž čárový kód. Horní číslo ISIC (nahoře na kartě) chtějí někdy u slevy online nebo na pokladně. Slevy ISIC v obchodech, kultuře a na jízdném ověří legitimace v appce ALIVE. Menza a koleje často chtějí plastovou kartu s čipem, ten telefon nenahradí."
+  },
+  "itic": {
+    "app": "com.bootiq2.gtsisic",
+    "web": "https://www.isic.cz/prukazy/prukaz-itic",
+    "program": "Průkaz ITIC",
+    "tlacitko": "Legitimace v ALIVE"
+  },
+  "aliveid": {
+    "app": "com.bootiq2.gtsisic",
+    "web": "https://www.isic.cz/prukazy/prukaz-aliveid",
+    "program": "Průkaz AliveID",
+    "tlacitko": "Legitimace v ALIVE"
+  },
+  "litacka": {
+    "app": "cz.dpp.praguepublictransport",
+    "web": "https://pid.cz/",
+    "program": "Karta Lítačka"
+  },
+  "inkarta": {
+    "app": "cz.cd.mujvlak.an",
+    "web": "https://www.cd.cz/",
+    "program": "In Karta"
+  },
+  "multisport": {
+    "app": "pl.benefitsystems.multisport.mymultisport",
+    "web": "https://www.multisport.cz/",
+    "program": "MultiSport Karta"
+  },
+  "mlp": {
+    "app": "com.embarcadero.MestskaKnihovnavPraze",
+    "web": "https://www.mlp.cz/",
+    "program": "Čtenářský průkaz MKP"
+  },
+  "kjm": {
+    "web": "https://www.kjm.cz/",
+    "program": "Čtenářský průkaz KJM"
+  },
+  "kmo": {
+    "web": "https://www.kmo.cz/",
+    "program": "Čtenářský průkaz KMO"
+  },
+  "bushman": {
+    "app": "com.appsisto.bushmanapp",
+    "web": "https://bushman.cz/bushman-club/",
+    "program": "Bushman Club"
+  },
+  "triola": {
+    "web": "https://www.triola.cz/triola-klub/",
+    "program": "Triola klub"
+  },
+  "blazek": {
+    "web": "https://www.blazek.cz/registrace/",
+    "program": "Klub Blažek"
+  },
+  "benetton": {
+    "app": "com.benetton.app",
+    "web": "https://cz.benetton.com/pages/loyalty",
+    "program": "The Colors Club"
+  },
+  "soliver": {
+    "app": "com.soliver.inyourpocket",
+    "web": "https://www.soliver.cz/",
+    "program": "s.Oliver Card"
+  },
+  "calzedonia": {
+    "app": "com.calzedoniagroup.calzedonia",
+    "web": "https://www.calzedonia.com/cz/loyaltylanding/",
+    "program": "Calzedonia Lover"
+  },
+  "intimissimi": {
+    "app": "com.calzedoniagroup.intimissimi",
+    "web": "https://www.intimissimi.com/cz/loyaltylanding/",
+    "program": "My Intimissimi"
+  },
+  "tezenis": {
+    "app": "com.calzedoniagroup.tezenis",
+    "web": "https://www.tezenis.com/cz/loyaltylanding/",
+    "program": "Tezenis Club"
+  },
+  "desigual": {
+    "web": "https://www.desigual.com/cs_CZ/desigual-club-1/",
+    "program": "Desigual Club"
+  },
+  "orsay": {
+    "app": "com.csag.orsay.android",
+    "web": "https://www.orsay.com/cs-cz/",
+    "program": "ORSAY Club"
+  },
+  "ecco": {
+    "web": "https://cz.ecco.com/kampaně/ecco-club",
+    "program": "ECCO Club"
+  },
+  "hudy": {
+    "web": "https://www.hudy.cz/vernostni-program-everest",
+    "program": "Věrnostní program EVEREST"
+  },
+  "martessport": {
+    "app": "pl.sklepmartes.app",
+    "web": "https://martessport.cz/",
+    "program": "M-CLUB"
+  },
+  "unihobby": {
+    "web": "https://www.unihobby.cz/vernostni-program-uni-hobby",
+    "program": "Věrnostní karta UNI HOBBY"
+  },
+  "istores": {
+    "web": "https://www.istores.cz/vernostni-program",
+    "program": "Věrnostní program iStores"
+  },
+  "zverokruh": {
+    "web": "https://www.zverokruh-shop.cz/informace-a-akce/zakaznicky-klub",
+    "program": "Zákaznický klub Zvěrokruh"
+  },
+  "kanzelsberger": {
+    "web": "https://www.kanzelsberger.cz/clanek/165/vernostni-klub",
+    "program": "Věrnostní klub Kanzelsberger"
+  },
+  "klenotyaurum": {
+    "app": "cz.klenotyaurum.app",
+    "web": "https://klub.klenotyaurum.cz/index.html",
+    "program": "Klenoty Klub"
+  },
+  "apart": {
+    "app": "pl.apart.android",
+    "web": "https://www.apart.cz/cz-cz/",
+    "program": "Apart Diamond Club"
+  },
+  "mondieu": {
+    "app": "mondieu.loyalty",
+    "web": "https://mondieu.cz/",
+    "program": "Mondieu",
+    "jenAppka": true,
+    "tlacitko": "Kód v appce Mondieu",
+    "kodText": "Kód se v appce Mondieu pořád mění, proto ho Kartička neuloží. Klepnutím otevřeš appku Mondieu s kódem."
+  },
+  "pardubickakarta": {
+    "app": "cz.odp.dpmpapp",
+    "web": "https://www.dpmp.cz/cestovani-mhd/nova-pardubicka-karta.html",
+    "program": "Pardubická karta",
+    "tlacitko": "Otevřít ViPKA"
+  },
+  "conad": {
+    "app": "it.conad.mobileapp",
+    "web": "https://www.conad.it/carte-e-premi",
+    "program": "Carta Insieme"
+  },
+  "ceskaposta": {
+    "app": "cz.postaonline.android",
+    "web": "https://www.postaonline.cz/",
+    "program": "Zákaznická karta",
+    "tlacitko": "Otevřít Pošta Online"
+  },
+  "albi": {
+    "web": "https://albi.cz/cteni-pro-radost/uzivejte-si-vyhod-albi-klubu/",
+    "program": "Albi klub",
+    "tlacitko": "Albi klub"
+  },
+  "nutrend": {
+    "web": "https://www.nutrend.cz/klub-nutrend",
+    "program": "Klub Nutrend",
+    "tlacitko": "Klub Nutrend"
+  },
+  "mensa": {
+    "web": "https://intranet.mensa.cz/",
+    "program": "Mensa ČR",
+    "tlacitko": "Intranet Mensy"
+  },
+  "motiko": {
+    "web": "https://www.motiko-official.cz/",
+    "program": "Motiko",
+    "tlacitko": "Web Motiko"
+  },
+  "oxo": {
+    "web": "https://www.oxobubble.cz/",
+    "program": "OXO",
+    "tlacitko": "Web OXO"
+  },
+  "calvinklein": {
+    "web": "https://www.calvinklein.cz/",
+    "program": "Calvin Klein",
+    "tlacitko": "Web Calvin Klein"
+  },
+  "lasergamepardubice": {
+    "app": "com.google.android.apps.walletnfcrel",
+    "web": "https://wallet.google.com/",
+    "program": "Razítka Laser Game",
+    "tlacitko": "Razítka a odměny",
+    "rada": "Razítka (10 = odměna) počítá Pluxeo. S osobním odkazem karty (merchant.pluxeo.com/c/…) otevře tlačítko přímo tvoje razítka, bez něj Peněženku Google. QR pro razítko je tady v Kartičce."
+  }
+}

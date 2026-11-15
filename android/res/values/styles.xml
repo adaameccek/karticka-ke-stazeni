@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Motiv" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/pozadi</item>
+        <item name="android:statusBarColor">@color/pozadi</item>
+        <item name="android:navigationBarColor">@color/pozadi</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:colorAccent">@color/text</item>
+    </style>
+
+    <style name="Snimac" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+    </style>
+
+    <!-- Jas: neviditelné okno přes plochu, jen nese jas naplno -->
+    <style name="Jas" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <!-- Vzhled widgetu: okno přes plochu nebo appku -->
+    <style name="Vzhled" parent="@android:style/Theme.Material.Light.Dialog.NoActionBar">
+        <item name="android:colorAccent">@color/text</item>
+        <item name="android:textColorPrimary">@color/text</item>
+    </style>
+
+    <style name="VzhledNadpis">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:textColor">@color/tlumeny</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="VzhledVolba">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+</resources>

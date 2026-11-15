@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bílá plocha kolem kódu v náhledu widgetu (widget_nahled.xml), malé rohy jako výchozí Vzhled widgetu. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="#FFFFFF" />
+    <corners android:radius="@dimen/w_panel_roh" />
+</shape>
